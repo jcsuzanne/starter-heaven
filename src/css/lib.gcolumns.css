@@ -1,0 +1,43 @@
+/*
+    Inspiration : Easy project Framework http://cssglobe.com/post/9849/easy-percentage-grid-system-with-html5
+    Description : Un système de grilles prêt à l'emploi
+    Usage       : "ggcols" definit un conteneur ggcols. "ggcolsX" definit le nombre globale de gcolonnes. ""ggcol" définit une gcolonne. "ggcolX" definit une fusion de gcolonne
+*/
+
+
+
+/* definition of the main container
+param : width depends of layout
+---------------------------------------------- */
+.gcontainer {  margin:20px auto;  position:relative; text-align:left; }
+
+
+/* definition of the columns
+option : pour ajouter un padding aux différentes colonnes, rajouter "padding: 0 1%" au gcol/gcolX et enlever 2% pour chaque width frère ou enfant
+---------------------------------------------- */
+.gcols{margin-bottom:1.5em;overflow:hidden;} /* main gcolumn container class */
+.gcol, .gcol2, .gcol3, .gcol4, .gcol5{ float:left; display:inline; margin-left:2%; /* only for demo purposes - remove this line */  }
+.gcols .first, .gcol:first-child{margin-left:0 !important;}
+.gcol{width:49%;} /* 2 equal width gcolumns - default */
+.gcols3 .gcol{width:32%;} /* 3 equal width gcolumns */
+.gcols4 .gcol{width:23.5%;} /* 4 equal width gcolumns */
+.gcols5 .gcol{width:18.4%;} /* 5 equal width gcolumns */
+.gcols6 .gcol{width:15%;} /* 6 equal width gcolumns */
+
+/* double width gcolumns */
+.gcols3 .gcol2{width:66%;}
+.gcols4 .gcol2{width:49%;}
+.gcols5 .gcol2{width:38.8%;}
+.gcols6 .gcol2{width:32%;}
+
+/* triple width gcolumns */
+.gcols4 .gcol3{width:74.5%;}
+.gcols5 .gcol3{width:59.2%;}
+.gcols6 .gcol3{width:49%;}
+
+/* quadruple width gcolumns */
+.gcols5 .gcol4{width:79.6%;}
+.gcols6 .gcol4{width:66%;}
+
+/* quintuple width gcolumns */
+.gcols6 .gcol5{width:83%;}

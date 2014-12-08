@@ -1,0 +1,84 @@
+/**
+ * @author Suzanne Jean-Christophe
+ * @lastmodified May, 18 2011
+ * v0.2
+ * @media screen
+ * un ensemble de classes non-semantiques pour la gestion CSS de cas particuliers
+ *
+ * Changelog
+ *
+ * v0.3
+	- suppression des classes fx-br, fx-bw, fx-op. Obsolète avec l'utilisation de LESS CSS'
+ * v0.2
+    - mise à jour globale du fichier pour une meilleure intégration à un projet
+    - inspiré du fichier base.css du framework G5 : http://framework.gregbabula.info/
+    - suppression du reset <body>, des declarations font-size, font-weight, font-style, color, text-decoration, text-transform, border
+    - mise à jour de la semantique de déclaration
+    - ajout d'effets crossbrowser
+    - ajout de classes globales first, last et hide
+ */
+
+ /* global */
+.first,.last { background: none; margin: 0; padding: 0; }
+.hide { position: absolute; left: -99999px; }
+
+/* floating */
+.fl-l { float:left !important; }
+.fl-r { float:right !important; }
+
+/* text-align */
+.ta-l { text-align:left !important; }
+.ta-c { text-align:center !important; }
+.ta-r { text-align:right !important; }
+.ta-j { text-align:justify !important; }
+
+/* display */
+.dp-b{ display:block !important; }
+.dp-i { display:inline !important; }
+.dp-ib { display:inline-block !important; }
+.dp-no { display:none; }
+.dp-t { display:table !important; }
+.dp-tc { display:table-cell !important; }
+
+/* visibility */
+.vs-1 { visibility:visible !important; }
+.vs-0 { visibility:hidden !important; }
+
+/* positionning */
+.pos-0 { position:relative; overflow:hidden; }
+.pos-l { position:absolute; left:0; }
+.pos-r { position:absolute; right:0; }
+.pos-t { position:absolute; top:0; }
+.pos-b { position:absolute; bottom:0; }
+
+/* overflow */
+.ov-h { overflow:hidden !important; }
+.ov-a { overflow:auto !important; }
+.ov-s { overflow:scroll !important; }
+
+/* clearing */
+.cl-0 { clear:none !important; }
+.cl-l { clear:left !important; }
+.cl-b { clear:both !important; }
+.cl-r { clear:right !important; }
+
+/* cross browser effects
+usage : .fx-br-7 pour ajouter une valeur
+*/
+.fx-br { border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;  }
+.fx-bw { box-shadow: 0 0 5px #000; -moz-box-shadow: 0 0 5px #000; -webkit-box-shadow: 0 0 5px #000;  }
+.fx-op { filter: alpha(opacity=50); opacity: .50; -khtml-opacity: .50; -ms-filter: "alpha(opacity=50)"; -moz-opacity: .50; }
+
+.visuallyhidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px; width: 1px;
+  margin: -1px; padding: 0; border: 0;
+}
+
+.ajaxhidden {
+  filter: alpha(opacity=0);
+  opacity: 0;
+  visibility: hidden;
+}
