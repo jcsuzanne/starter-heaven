@@ -1,6 +1,10 @@
 {
   "name": "starter-heaven",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jcsuzanne/starter-heaven"
+  },
   "files": [
     "src/css/com.reset.css",
     "src/css/com.utils.css",
