@@ -5,6 +5,7 @@ Front-end sources for development
 Dependencies
   - Laravel
   - Laravel installer
+  - Caramel (https://packagist.org/packages/lapiscine/caramel)
   - WGET for installation
   - Gulp
 
