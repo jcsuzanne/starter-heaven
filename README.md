@@ -23,11 +23,11 @@ Dependencies
     'minify' => '.min',
 
 
-3.Get Caramel front-end boilerplate by adding the lib in _composer.jon_
+3.Get Caramel front-end boilerplate by adding the lib in _composer.jon_ and run _composer update_
 
     "lapiscine/caramel": "dev-master"
 
-4.Setup the Laravel environment
+4.Setup the Laravel environment in _bootstrap/start.php_
 
     $env = $app->detectEnvironment(function () {
 
@@ -52,8 +52,17 @@ Change the extends controller class in the controller file
 
 Pass the datas inside _viewData_
 
-    $this->viewData['view'] = 'test';
-    $this->viewData['yo'] = 'yo';
+    $this->viewData['view'] = 'the content';
+    $this->viewData['jscontroller'] = 'js-controller';
+
+5.Update _.gitignore_ with
+
+    /node_modules/
+    npm-debug.log
+    /.sass-cache/
+    /public/assets/build
+    /public/assets/img/temp
+
 
 License
 ----
