@@ -42,6 +42,7 @@ module.exports = {
             'node_modules/kickstarter/src/kickstarter.js',
             'node_modules/gsap/src/minified/TweenMax.min.js',
             'node_modules/raf/src/raf.js',
+            'node_modules/js-toolbox/src/toolbox.js',
         ],
         srcWatch : src + '/js/*.js',
         dest: dest,
