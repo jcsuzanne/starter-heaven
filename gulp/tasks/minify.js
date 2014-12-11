@@ -11,11 +11,12 @@ gulp.task('minify', function() {
     gulp.src(config.srcCSS)
     .pipe(minifyCSS({keepBreaks:false}))
     .pipe(rename(config.fileminCSS))
-    .pipe(gulp.dest(config.dest));
+    .pipe(gulp.dest(config.dest))
+    .pipe(notify("Minify is Done!"))
+    ;
     gulp.src(config.srcJS)
     .pipe(rename(config.fileminJS))
     .pipe(uglify())
     .pipe(gulp.dest(config.dest))
-    .pipe(notify("Minify is Done!"))
     ;
 });

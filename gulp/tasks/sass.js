@@ -17,9 +17,6 @@ gulp.task('sass', function() {
     .pipe(rename(config.file))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(config.dest))
-    // .pipe(minifyCSS({keepBreaks:false}))
-    // .pipe(rename(config.filemin))
-    // .pipe(gulp.dest(config.dest))
     .pipe(notify("CSS is Ready!"))
     ;
 });

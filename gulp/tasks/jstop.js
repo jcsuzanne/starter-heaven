@@ -4,6 +4,7 @@ var gulp                    =   require('gulp');
 var rename                  =   require('gulp-rename');
 var concat                  =   require('gulp-concat');
 var uglify                  =   require('gulp-uglify');
+var notify                  =   require("gulp-notify");
 var config                  =   require('../config').jstop;
 
 gulp.task('jstop', function () {
@@ -13,5 +14,6 @@ gulp.task('jstop', function () {
     .pipe(rename(config.filemin))
     .pipe(uglify())
     .pipe(gulp.dest(config.dest))
+    .pipe(notify("JSTop is Done!"))
     ;
 });

@@ -1,6 +1,23 @@
-starter-heaven
-==============
+# Starter Heaven
 
-# Configuration
+Front-end sources for development
 
-See full_package.md
+Dependencies
+  - Laravel
+  - Laravel installer
+  - WGET for installation
+  - Gulp
+
+### Version
+0.0.3
+
+### Installation
+
+Launch installer
+
+FOLDER=foldername ./install.sh
+
+License
+----
+
+MIT

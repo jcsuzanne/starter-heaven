@@ -1,6 +1,6 @@
 {
   "name": "starter-heaven",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/jcsuzanne/starter-heaven"
@@ -30,7 +30,6 @@
     "install": "napa"
   },
   "napa": {
-    "starter-heaven": "jcsuzanne/starter-heaven",
     "json2": "douglascrockford/JSON-js",
     "modernizr": "jcsuzanne/modernizr.custom",
     "raf": "jcsuzanne/raf",
