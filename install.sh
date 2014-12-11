@@ -11,6 +11,7 @@ mv gulp ../
 mv gulpfile.js ../
 mv package.json ../
 mv src ../
+mv templates ../app/views/
 cd ../
 rm -R starter-heaven-master
 rm master.zip
