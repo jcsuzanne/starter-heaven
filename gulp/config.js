@@ -1,4 +1,4 @@
-var dest                    =   "./public/assets/build";
+var dest                    =   "./public/src/build";
 var destImg                 =   "./public/assets/img";
 var src                     =   './src';
 var fileCSS                 =   'front.css';
@@ -38,11 +38,17 @@ module.exports = {
             'node_modules/jquery-upgrade/src/jquery.enhance',
             'node_modules/jquery.mousewheel/jquery.mousewheel.js',
             'node_modules/jquery-smartresize/jquery.throttledresize.js',
-            'node_modules/history.js/history.js',
+            // 'node_modules/history.js/history.js',
             'node_modules/kickstarter/src/kickstarter.js',
             'node_modules/gsap/src/minified/TweenMax.min.js',
             'node_modules/raf/src/raf.js',
             'node_modules/js-toolbox/src/toolbox.js',
+            'src/js/com.transition.js',
+            'src/js/com.core.js',
+            'src/js/com.layout.js',
+            'src/js/com.preload.js',
+            'src/js/view.home.js',
+            'src/js/app.js'
         ],
         srcWatch : src + '/js/*.js',
         dest: dest,
