@@ -34,7 +34,7 @@ module.exports = {
     javascript: {
         src: [
             'node_modules/json2/json2.js',
-            'node_modules/jquery/jquery.min.js',
+            'node_modules/jquery/dist/jquery.min.js',
             'node_modules/jquery-upgrade/src/jquery.enhance',
             'node_modules/jquery.mousewheel/jquery.mousewheel.js',
             'node_modules/jquery-smartresize/jquery.throttledresize.js',
