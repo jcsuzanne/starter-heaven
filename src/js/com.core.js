@@ -42,7 +42,7 @@ var
             if(kickstarter.ev.move == 'touchmove') {
                 isTouch = true;
             }
-            Modernizr.Detectizr.detect({
+            Detectizr.detect({
                 addAllFeaturesAsClass: false
             ,   detectDevice: true
             ,   detectDeviceModel: false
