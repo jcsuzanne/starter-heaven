@@ -9,8 +9,14 @@
 
         }
 
+        var after = function(_view)
+        {
+
+        }
+
         return {
                 init : init
+            ,   alfter : after
         }
     })();
 
