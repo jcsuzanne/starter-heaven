@@ -14,6 +14,7 @@ var
 ,   $master
 ,   $mainNav
 ,   API_transition
+,   API_toolbox
 ,   RAF
 ,   $window             = $(window)
 ,   _k                  = kickstarter
@@ -73,6 +74,7 @@ var
         {
             var __that = this;
             API_transition      =   transition.init();
+            API_toolbox         =   toolbox.init();
             setGlobalVariables();
             smartResize();
             detectBrowser();
@@ -82,7 +84,6 @@ var
         // Datas Is Ready
         //==============
         var ready = function() {
-            SITE.toolbox.init();
             SITE.layout.init();
         }
 
