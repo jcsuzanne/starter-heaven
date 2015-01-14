@@ -8,7 +8,7 @@
 <html class="no-js" lang="<?= App::getLocale() ?>"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
-    <?php //include(app_path().'/views/layout/seo.php'); ?>
+    <?php include(app_path().'/views/templates/seo.blade.php'); ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::asset('favicon.ico') ?>">
@@ -29,11 +29,7 @@
 <body role="document" data-controller="<?= $jscontroller ?>" data-method data-event>
 <div id="master">
     <?php //include(app_path().'/views/layout/desktop/mainnav.php'); ?>
-    <section id="main-content" role="main" data-controller="<?= $jscontroller ?>">
-        <div class="the-view">
-        <?= $view ?>
-        </div>
-    </section>
+    <section id="main-content" role="main" data-controller="<?= $jscontroller ?>"><?= $view ?></section>
     <?php //include(app_path().'/views/layout/desktop/footer.php'); ?>
 </div>
 <script type="text/javascript" src="<?= URL::asset('assets/build/front'.Config::get('app.minify').'.js') ?>"></script>

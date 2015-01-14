@@ -1,7 +1,7 @@
 <?php
-$title = (isset($seo->title))?strip_tags($seo->title):'';
-$description = (isset($seo->description))?$seo->description:'';
-$img = (isset($seo->img))?$seo->img:'';
+$title = (isset($meta))?strip_tags($meta):'';
+$description = (isset($metaDescription))?$metaDescription:'';
+$img = (isset($metaImg))?$metaImg:'';
 ?>
 <title><?= $title ?></title>
 <meta property="og:title" content="<?= $title ?>">
@@ -15,6 +15,6 @@ $img = (isset($seo->img))?$seo->img:'';
 <meta name="twitter:title" content="<?= $title ?>">
 <meta name="twitter:description" content="<?= $description ?>">
 <meta name="twitter:image:src" content="<?= $img ?>">
-<link rel="canonical" href="<?= URL::current() ?>" />
 <meta name="robots" content="index, follow">
 <meta name="description" content="<?= $description ?>" />
+<link rel="canonical" href="<?= URL::current() ?>" />
