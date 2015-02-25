@@ -56,7 +56,7 @@
     "gulp-through": "^0.3.0",
     "gulp-uglify": "^1.0.1",
     "gulp.spritesmith": "^1.4.0",
-    "history.js": "1.8.0",
+    "historyjs": "^1.8.0-b2",
     "jquery": "latest",
     "jquery-mousewheel": "3.1.12",
     "napa": "^1.0.2",

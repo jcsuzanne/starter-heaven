@@ -28,7 +28,7 @@
 
         return {
                 init : init
-            ,   alfter : after
+            ,   after : after
         }
     })();
 

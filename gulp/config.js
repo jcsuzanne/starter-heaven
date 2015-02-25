@@ -1,4 +1,4 @@
-var dest                    =   "./public/src/build";
+var dest                    =   "./public/assets/build";
 var destImg                 =   "./public/assets/img";
 var src                     =   './src';
 var fileCSS                 =   'front.css';
@@ -35,10 +35,10 @@ module.exports = {
         src: [
             'node_modules/json2/json2.js',
             'node_modules/jquery/dist/jquery.min.js',
-            'node_modules/jquery-upgrade/src/jquery.enhance',
+            'node_modules/jquery-enhance/src/jquery.enhance.js',
             'node_modules/jquery-mousewheel/jquery.mousewheel.js',
             'node_modules/jquery-smartresize/jquery.throttledresize.js',
-            // 'node_modules/history.js/history.js',
+            // 'node_modules/historyjs/scripts/bundled/html5/jquery.history.js',
             'node_modules/kickstarter/src/kickstarter.js',
             'node_modules/gsap/src/minified/TweenMax.min.js',
             'node_modules/raf/src/raf.js',
