@@ -1,5 +1,6 @@
 var dest                    =   "./public/assets/build";
 var destImg                 =   "./public/assets/img";
+var destRoot                =   "./public/";
 var src                     =   './src';
 var fileCSS                 =   'front.css';
 var fileminCSS              =   'front.min.css';
@@ -75,5 +76,9 @@ module.exports = {
     images: {
         src: src + "/images/**",
         dest: dest + "/images"
-    }
+    },
+    svg: {
+        src: src + "/svg/**.svg",
+        dest: destRoot + "assets/svg/"
+    },
 };
