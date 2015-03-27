@@ -10,7 +10,7 @@ Dependencies
   - Gulp
 
 ### Version
-0.0.3
+0.0.7
 
 ### Installation
 
