@@ -8,6 +8,8 @@ var fileminCSS              =   'front.min.css';
 var fileminCSSMobile        =   'mobile.min.css';
 var fileJS                  =   'front.js';
 var fileminJS               =   'front.min.js';
+var compatibilityDesktop    =   { browsers: ['last 2 versions','> 1%', 'IE 9' , 'Safari <= 8'] };
+var compatibilityMobile     =   { browsers: ['last 2 versions','> 1%', 'iOS <= 7' , 'Android >= 4'] };
 
 module.exports = {
     csstop: {
@@ -32,14 +34,16 @@ module.exports = {
         srcWatch: src + "/precss/*.{sass,scss}",
         dest: dest,
         file: fileCSS,
-        filemin: fileminCSS
+        filemin: fileminCSS,
+        compability : compatibilityDesktop
     },
     sassMobile: {
         src: src + "/precss-mobile/builder.{sass,scss}",
         srcWatch: src + "/precss-mobile/*.{sass,scss}",
         dest: dest,
         file: fileCSSMobile,
-        filemin: fileminCSSMobile
+        filemin: fileminCSSMobile,
+        compability: compatibilityMobile
     },
     javascript: {
         src: [
