@@ -7,6 +7,7 @@ var rename                  =   require('gulp-rename');
 var uglify                  =   require('gulp-uglify');
 var notify                  =   require("gulp-notify");
 var plumber                 =   require('gulp-plumber');
+var livereload              =   require('gulp-livereload');
 var config                  =   require('../config').javascript;
 
 gulp.task('javascript', function() {
@@ -17,5 +18,6 @@ gulp.task('javascript', function() {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.dest))
     .pipe(notify("JS is Ready!"))
+    .pipe(livereload())
     ;
 });

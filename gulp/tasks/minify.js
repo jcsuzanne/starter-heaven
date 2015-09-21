@@ -14,6 +14,12 @@ gulp.task('minify', function() {
     .pipe(gulp.dest(config.dest))
     .pipe(notify("Minify is Done!"))
     ;
+    gulp.src(config.srcCSSMobile)
+    .pipe(minifyCSS({keepBreaks:false}))
+    .pipe(rename(config.fileminCSSMobile))
+    .pipe(gulp.dest(config.dest))
+    .pipe(notify("Minify Mobile is Done!"))
+    ;
     gulp.src(config.srcJS)
     .pipe(rename(config.fileminJS))
     .pipe(uglify())

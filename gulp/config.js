@@ -3,7 +3,9 @@ var destImg                 =   "./public/assets/img";
 var destRoot                =   "./public/";
 var src                     =   './src';
 var fileCSS                 =   'front.css';
+var fileCSSMobile           =   'mobile.css';
 var fileminCSS              =   'front.min.css';
+var fileminCSSMobile        =   'mobile.min.css';
 var fileJS                  =   'front.js';
 var fileminJS               =   'front.min.js';
 
@@ -31,6 +33,13 @@ module.exports = {
         dest: dest,
         file: fileCSS,
         filemin: fileminCSS
+    },
+    sassMobile: {
+        src: src + "/precss-mobile/builder.{sass,scss}",
+        srcWatch: src + "/precss-mobile/*.{sass,scss}",
+        dest: dest,
+        file: fileCSSMobile,
+        filemin: fileminCSSMobile
     },
     javascript: {
         src: [
@@ -60,6 +69,9 @@ module.exports = {
         dest: dest,
         srcCSS: dest + '/'+fileCSS,
         fileminCSS: fileminCSS,
+        srcCSSMobile: dest + '/'+fileCSSMobile,
+        fileminCSSMobile: fileminCSSMobile,
+        srcWatchMobile: dest + '/'+fileCSSMobile,
         srcJS: dest + '/'+fileJS,
         fileminJS: fileminJS
     },
