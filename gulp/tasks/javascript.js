@@ -11,6 +11,14 @@ var livereload              =   require('gulp-livereload');
 var config                  =   require('../config').javascript;
 
 gulp.task('javascript', function() {
+    gulp.src(config.srcMobile)
+    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+    .pipe(sourcemaps.init())
+    .pipe(concat(config.fileMobile))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(config.dest))
+    .pipe(notify("JS Mobile is Ready!"))
+    ;
     gulp.src(config.src)
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(sourcemaps.init())

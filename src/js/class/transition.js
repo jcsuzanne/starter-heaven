@@ -21,6 +21,7 @@
         return _instance;
     }
 
+
     // Singleton
     var _instance;
 

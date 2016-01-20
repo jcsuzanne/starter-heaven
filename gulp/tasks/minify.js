@@ -25,4 +25,9 @@ gulp.task('minify', function() {
     .pipe(uglify())
     .pipe(gulp.dest(config.dest))
     ;
+    gulp.src(config.srcJSMobile)
+    .pipe(rename(config.fileminJSMobile))
+    .pipe(uglify())
+    .pipe(gulp.dest(config.dest))
+    ;
 });
