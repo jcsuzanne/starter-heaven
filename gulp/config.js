@@ -1,7 +1,7 @@
 var dest                    =   "./public/assets/build";
 var destImg                 =   "./public/assets/img";
 var destRoot                =   "./public/";
-var src                     =   './src';
+var src                     =   './resources';
 var fileCSS                 =   'front.css';
 var fileCSSMobile           =   'mobile.css';
 var fileminCSS              =   'front.min.css';
@@ -59,11 +59,11 @@ module.exports = {
             'node_modules/gsap/src/minified/TweenMax.min.js',
             'node_modules/raf/src/raf.js',
             'node_modules/js-toolbox/src/toolbox.js',
-            'src/js/class/transition.js',
-            'src/js/base/core.js',
-            'src/js/framework/layout.js',
-            'src/js/view/view.home.js',
-            'src/js/base/app.js'
+            'resources/js/class/transition.js',
+            'resources/js/base/core.js',
+            'resources/js/framework/layout.js',
+            'resources/js/view/home.js',
+            'resources/js/base/app.js'
         ],
         srcMobile: [
             'node_modules/json2/json2.js',
@@ -72,10 +72,10 @@ module.exports = {
             'node_modules/kickstarter/src/kickstarter.js',
             'node_modules/gsap/src/minified/TweenMax.min.js',
             'node_modules/js-toolbox/src/toolbox.js',
-            'src/js/class/transition.js',
-            'src/js/base/core.js',
-            'src/js/framework/layout.js',
-            'src/js/view/view.home.js',
+            'resources/js/class/transition.js',
+            'resources/js/base/core.js',
+            'resources/js/framework/layout.js',
+            'resources/js/view/home.js',
         ],
         srcWatch : src + '/js/**/*.js',
         dest: dest,

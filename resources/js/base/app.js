@@ -13,6 +13,7 @@
                 scope       =   this
             ;
             _k.subscribe('statechange::after',function(_json) {
+                isVisiting = true;
                 scope.htmlin(_json);
             });
             _k.subscribe('statechange::finalize',function(_controller) {
@@ -41,7 +42,6 @@
             if(typeof SITE[getController] != 'undefined' && typeof SITE[getController].after == 'function') SITE[getController].after($view);
             document.title  =   getTitle;
             _k.publish('statechange::finalize',[getController,getOldController]);
-            isVisiting = true;
         }
         ,
         init : function()

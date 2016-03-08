@@ -61,7 +61,7 @@
 
 @mixin ios-recent
 {
-    .iphone.ios9 &,.iphone.ios8 &
+    .iphone.safari.ios9 &,.iphone.safari.ios8 &
     {
         @content;
     }
