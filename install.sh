@@ -1,6 +1,7 @@
 # INSTALL LARAVEL
-laravel new $FOLDER
+composer create-project laravel/laravel $FOLDER 4.2.* --prefer-dist
 cd $FOLDER
+composer install
 chmod -R 777 app/storage
 
 # INSTALL LARAVEL HEAVEN
@@ -10,7 +11,7 @@ cd starter-heaven-master
 mv gulp ../
 mv gulpfile.js ../
 mv package.json ../
-mv src ../
+mv resources ../
 mv templates ../app/views/
 cd ../
 rm -R starter-heaven-master
