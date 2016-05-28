@@ -80,3 +80,12 @@ $easeInOutSine  :           cubic-bezier(0.445, 0.050, 0.550, 0.950);
 $easeInBack     :           cubic-bezier(0.600, -0.280, 0.735, 0.045);
 $easeOutBack    :           cubic-bezier(0.175,  0.885, 0.320, 1.275);
 $easeInOutBack  :           cubic-bezier(0.680, -0.550, 0.265, 1.550);
+
+//Material standard
+$materialEaseLinear :       cubic-bezier(0.4, 0.0, 0.2, 1);
+//Material ease out
+$materialEaseIn :           cubic-bezier(0.4, 0.0, 1, 1);
+//Material ease in
+$materialEaseOut :          cubic-bezier(0.0, 0.0, 0.2, 1);
+//Material curve
+$materialEaseCurve :        cubic-bezier(0.4, 0.0, 0.6, 1);

@@ -10,7 +10,7 @@ Dependencies
   - Gulp
 
 ### Version
-0.0.8
+0.1.0
 
 ### Installation
 
@@ -63,6 +63,8 @@ Pass the datas inside _viewData_
     /public/assets/build
     /public/assets/img/temp
 
+6.How to use with Laravel 5.2 + Wordpress
+https://www.evernote.com/shard/s209/sh/64e95a53-6943-4e03-adcb-476fcf5b64f4/9776562f37c7db7b
 
 License
 ----
