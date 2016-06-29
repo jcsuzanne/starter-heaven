@@ -11,21 +11,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @include('partials.seo')
     @include('partials.favicon')
-    <!-- Styles -->
-    <link rel="stylesheet" type="text/css" href="<?= URL::asset('assets/build/top'.Config::get('app.minify').'.css') ?>" media="all" />
+    @include('partials.assets')
     <link rel="stylesheet" type="text/css" href="<?= URL::asset('assets/build/front'.Config::get('app.minify').'.css') ?>" media="all" />
-    <!-- Javascript -->
-    <script type="text/javascript" src="<?= URL::asset('assets/build/top'.Config::get('app.minify').'.js') ?>"></script>
-    <script type="text/javascript">
-    // <![CDATA[
-    var config = {
-        lang : "<?= config('app.locale') ?>",
-        pathAssets : "<?= URL::asset('assets') ?>"
-    }
-    // ]]>
-    </script>
+    @include('partials.analytics')
 </head>
-<body role="document" data-controller="<?= $jscontroller ?>" data-method data-event>
+<body data-controller="<?= $jscontroller ?>" data-method data-event>
 <div id="master">
     <!-- view -->
     <section id="main-content" role="main" data-controller="<?= $jscontroller ?>"><?= $view ?></section>

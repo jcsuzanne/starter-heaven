@@ -5,23 +5,23 @@
     {
 
 
-        // Global
+        // UI
         //=======
-        var Global = function() {
+        var UI = function() {
 
             this.init();
         };
-        Global.prototype = {
+        UI.prototype = {
             channels : function() {
                 var
-                    global      =   this
+                self = this
                 ;
                 _k.subscribe('mainnav::update',function(_controller) {
-                    global.mainnavUpdate(_controller);
+                    self.mainnavUpdate(_controller);
                 });
                 _k.subscribe('statechange::before',function() {
-                    global.offAll();
-                    global.reset();
+                    self.offAll();
+                    self.reset();
                 });
             }
             ,
@@ -40,7 +40,7 @@
                 });
                 _k.unsubscribe('window::smartresize');
                 cancelRequestAnimFrame(RAF);
-                allowPreventTouch   =   true;
+                allowPreventTouch = true;
             }
             ,
             mainnavUpdate : function(_controller)
@@ -56,8 +56,8 @@
             setup : function()
             {
                 var
-                    getController       =   $mainContent.attr('data-controller')
-                ;
+                getController = $mainContent.attr('data-controller')
+
                 this.mainnavUpdate(getController);
             }
             ,
@@ -68,23 +68,15 @@
         }
 
 
-        // Transition finalize
-        //====================
-        var transitionFinalize = function(_controller)
-        {
-            console.log('transitionFinalize :',_controller);
-        }
-
         // Initialize the template
         //=======================
         var init = function()
         {
-            new Global();
+            new UI();
         }
 
         return {
-                init: init
-            ,   transitionFinalize:transitionFinalize
+            init: init
         }
     })();
 

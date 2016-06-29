@@ -1,6 +1,6 @@
 {
   "name": "starter-heaven",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/jcsuzanne/starter-heaven"
@@ -67,6 +67,8 @@
     "jquery": "latest",
     "jquery-mousewheel": "3.1.13",
     "napa": "^2.3.0",
+    "blast-text": "^2.0.0",
+    "waypoints": "^4.0.0",
     "require-dir": "^0.3.0"
   },
   "author": "jean-christophe suzanne",
