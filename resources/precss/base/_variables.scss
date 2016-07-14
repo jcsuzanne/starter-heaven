@@ -89,3 +89,5 @@ $materialEaseIn :           cubic-bezier(0.4, 0.0, 1, 1);
 $materialEaseOut :          cubic-bezier(0.0, 0.0, 0.2, 1);
 //Material curve
 $materialEaseCurve :        cubic-bezier(0.4, 0.0, 0.6, 1);
+//Ease linear Out
+$easeLinearOut:             cubic-bezier(0.250, 0.250, 0.665, 1.000);
