@@ -27,16 +27,14 @@
             ,
             offAll : function() {
                 $.each(EVENTS,function() {
-                    $.each(this,function() {
-                        if(this.indexOf('keydown') >= 0)
-                        {
-                            $body.off(this);
-                        }
-                        else
-                        {
-                            $mainContent.off(this);
-                        }
-                    });
+                    if(this.indexOf('keydown') >= 0)
+                    {
+                        $body.off(this);
+                    }
+                    else
+                    {
+                        $mainContent.off(this);
+                    }
                 });
                 _k.unsubscribe('window::smartresize');
                 cancelRequestAnimFrame(RAF);

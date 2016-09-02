@@ -1,5 +1,5 @@
 <?php
-$title = (isset($meta))?strip_tags($meta):'';
+$title = (isset($metaTitle))?strip_tags($metaTitle):'';
 $description = (isset($metaDescription))?$metaDescription:'';
 $img = (isset($metaImg))?$metaImg:'';
 ?>
