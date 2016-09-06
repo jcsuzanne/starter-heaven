@@ -2,7 +2,7 @@
 //==================
 var gulp                    =   require('gulp');
 var rename                  =   require('gulp-rename');
-var minifyCSS               =   require('gulp-minify-css');
+var minifyCSS               =   require('gulp-clean-css');
 var concatCss               =   require('gulp-concat-css');
 var notify                  =   require("gulp-notify");
 var config                  =   require('../config').csstop;

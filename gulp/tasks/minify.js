@@ -1,7 +1,7 @@
 // Minify JS and CSS
 //==================
 var gulp                    =   require('gulp');
-var minifyCSS               =   require('gulp-minify-css');
+var minifyCSS               =   require('gulp-clean-css');
 var uglify                  =   require('gulp-uglify');
 var rename                  =   require('gulp-rename');
 var notify                  =   require("gulp-notify");
