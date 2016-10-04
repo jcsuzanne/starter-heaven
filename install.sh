@@ -14,7 +14,6 @@ mv gulp ../
 mv gulpfile.js ../
 mv package.json ../
 mv resources ../
-mv templates ../resources/views/
 mv app/Http/Middleware/Caramel.php ../app/Http/Middleware/
 cd ../
 rm -R starter-heaven-master
