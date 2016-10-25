@@ -67,7 +67,7 @@
 %height100
 {
     height: 100vh;
-    .safari.ios9 &,.safari.ios8 &
+    .safari.ios10 &,.safari.ios9 &,.safari.ios8 &
     {
         height: calc(100vh - 25px)
     }
