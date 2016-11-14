@@ -6,7 +6,7 @@
 }
 
 @mixin oldie {
-    .ie9 &,.ie8 &
+    .ie10 &,.ie9 &,.ie8 &
     {
         @content;
     }
@@ -19,9 +19,31 @@
     }
 }
 
+@mixin safari {
+    .safari &
+    {
+        @content;
+    }
+}
+
+@mixin edge {
+    .edge &
+    {
+        @content;
+    }
+}
+
 @mixin windows
 {
     .windows &
+    {
+        @content;
+    }
+}
+
+@mixin windowsff
+{
+    .windows.firefox &
     {
         @content;
     }
@@ -45,13 +67,6 @@
     }
 }
 
-@mixin skin-light {
-    .skin--isLight &
-    {
-        @content;
-    }
-}
-
 @mixin is-sticky {
     .mainnav--isSticky &
     {
@@ -61,7 +76,7 @@
 
 @mixin ios-recent
 {
-    .iphone.safari.ios9 &,.iphone.safari.ios8 &
+    .iphone.safari.ios10 &,.iphone.safari.ios9 &,.iphone.safari.ios8 &
     {
         @content;
     }
