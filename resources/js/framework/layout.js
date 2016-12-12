@@ -4,7 +4,6 @@
     SITE.layout = (function()
     {
 
-
         // UI
         //=======
         var UI = function() {
@@ -15,10 +14,7 @@
             channels : function() {
                 var
                 self = this
-                ;
-                _k.subscribe('mainnav::update',function(_controller) {
-                    self.mainnavUpdate(_controller);
-                });
+
                 _k.subscribe('statechange::before',function() {
                     self.offAll();
                     self.reset();
@@ -41,11 +37,6 @@
                 allowPreventTouch = true;
             }
             ,
-            mainnavUpdate : function(_controller)
-            {
-                console.log('mainnav update',_controller);
-            }
-            ,
             reset : function() {
                 $mainContent.removeClass('canScroll');
                 SITE.core.smartResize();
@@ -53,10 +44,7 @@
             ,
             setup : function()
             {
-                var
-                getController = $mainContent.attr('data-controller')
 
-                this.mainnavUpdate(getController);
             }
             ,
             init : function() {

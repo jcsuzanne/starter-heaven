@@ -63,8 +63,14 @@ Pass the datas inside _viewData_
     /public/assets/build
     /public/assets/img/temp
 
-6.How to use with Laravel 5.2 + Wordpress
+
+### Migration L5 (5.2 ou 5.3)
+
+https://github.com/jcsuzanne/caramel-l5
+
+How to use with Laravel 5.2 + Wordpress
 https://www.evernote.com/shard/s209/sh/64e95a53-6943-4e03-adcb-476fcf5b64f4/9776562f37c7db7b
+
 
 License
 ----
