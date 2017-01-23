@@ -1,6 +1,6 @@
 {
   "name": "starter-heaven",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/jcsuzanne/starter-heaven"
@@ -40,6 +40,7 @@
     "family-sass": "LukyVj/family.scss"
   },
   "devDependencies": {
+    "blast-text": "^2.0.0",
     "gsap": "latest",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
@@ -63,13 +64,13 @@
     "gulp-through": "^0.4.0",
     "gulp-uglify": "^1.5.3",
     "gulp.spritesmith": "^6.2.1",
+    "hammerjs": "^2.0.8",
     "historyjs": "^1.8.0-b2",
     "jquery": "latest",
     "jquery-mousewheel": "3.1.13",
     "napa": "^2.3.0",
-    "blast-text": "^2.0.0",
-    "waypoints": "^4.0.0",
-    "require-dir": "^0.3.0"
+    "require-dir": "^0.3.0",
+    "waypoints": "^4.0.0"
   },
   "author": "jean-christophe suzanne",
   "license": "MIT"

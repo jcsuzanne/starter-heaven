@@ -24,8 +24,10 @@ var
 ,   no3D                = false
 ,   isTouch             = false
 ,   isTablet            = false
+,   isMobile            = false
 ,   startApp            = false
 ,   allowPreventTouch   = true
+,   canAjax             = true
 ,   EVENTS              = {}
 ;
 
@@ -53,7 +55,9 @@ var
             })
             if(Detectizr.device.type == 'tablet') {
                 isTablet = true;
-                // preventTouchBounce();
+            }
+            if(Detectizr.device.type == 'mobile') {
+                isMobile = true;
             }
             if((Detectizr.browser.name == "ie" && Detectizr.browser.version == "8") || $HTML.hasClass('ie8'))
             {

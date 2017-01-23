@@ -99,20 +99,20 @@
 // Transitions //
 %transition-background
 {
-    @include transitions(background-color 200ms $easeInOutCubic);
+    transition: background-color 200ms $easeOutCubic;
 }
 %transition-bordercolor
 {
-    @include transitions(border-color 400ms $easeOutCubic);
+    transition: border-color 400ms $easeOutCubic;
 }
 %transition-color
 {
-    @include transitions(color 200ms $easeInOutCubic);
+    transition: color 400ms $easeOutCubic;
 }
 %transition-opacity
 {
-    @include opacity(1);
-    @include transitions(opacity 400ms $easeInOutCubic);
+    opacity: 1;
+    transition: opacity 400ms $easeOutCubic;
 }
 
 // Fonts //

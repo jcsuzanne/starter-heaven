@@ -59,6 +59,7 @@ module.exports = {
             'node_modules/gsap/src/minified/TweenMax.min.js',
             'node_modules/raf/src/raf.js',
             'node_modules/js-toolbox/src/toolbox.js',
+            'resources/js/class/context.js',
             'resources/js/class/transition.js',
             'resources/js/base/core.js',
             'resources/js/framework/layout.js',

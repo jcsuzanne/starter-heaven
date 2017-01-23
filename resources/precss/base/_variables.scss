@@ -28,16 +28,8 @@ $COMP_SVG :                 "../svg/";
 // -------------------------
 $global-zindex:             10;
 $grid-push-gutter:          45px;
+$ui-zindex:                 50;
 
-// Typo
-// -------------------------
-$xxlarge-size:              48px;
-$xlarge-size:               30px;
-$large-size:                20px;
-$medium-size:               16px;
-$small-size:                14px;
-$xsmall-size:               12px;
-$xxsmall-size:              11px;
 
 // Animations CSS
 // --------------
@@ -91,3 +83,5 @@ $materialEaseOut :          cubic-bezier(0.0, 0.0, 0.2, 1);
 $materialEaseCurve :        cubic-bezier(0.4, 0.0, 0.6, 1);
 //Ease linear Out
 $easeLinearOut:             cubic-bezier(0.250, 0.250, 0.665, 1.000);
+//Ease Smooth
+$easeSmooth:                cubic-bezier(0.57, 0, 0.08, 1);

@@ -3,10 +3,12 @@
 
     SITE.home = (function()
     {
+        var
+        klassName = '.layout-home'
 
         var DOM = function(_view)
         {
-            this.view           =   (typeof _view != 'undefined')?_view.find('.layout__home'):$('.layout__home');
+            this.view = (typeof _view != 'undefined')?_view.find(klassName):$(klassName);
             this.init();
         }
         DOM.prototype = {
@@ -18,7 +20,8 @@
 
         var init = function()
         {
-            new DOM();
+            new DOM($mainContent);
+            _k.publish('context::dom::ready',$mainContent)
         }
 
         var after = function(_view)

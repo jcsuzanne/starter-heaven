@@ -10,11 +10,16 @@
         channels : function()
         {
             var
-                scope       =   this
-            ;
+            self = this
+            
+            _k.subscribe('statechange::before',function()
+            {
+                canAjax = false
+            })
+
             _k.subscribe('statechange::after',function(_json) {
                 isVisiting = true;
-                scope.htmlin(_json);
+                self.htmlin(_json);
             });
             _k.subscribe('statechange::finalize',function(_controller) {
                 console.log('anim');
@@ -30,7 +35,7 @@
             ,   getTitle        =   data.meta
             ;
 
-            $body.attr('data-controller',getController);
+            $body.attr('data-controller',getController)
             $mainContent.attr('data-controller',getController);
 
 
