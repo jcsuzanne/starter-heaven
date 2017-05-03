@@ -1,6 +1,6 @@
 {
   "name": "starter-heaven",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/jcsuzanne/starter-heaven"
@@ -58,7 +58,7 @@
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.1",
-    "gulp-sourcemaps": "^1.6.0",
+    "gulp-sourcemaps": "2.4.1",
     "gulp-svgmin": "^1.2.2",
     "gulp-throttle": "0.0.2",
     "gulp-through": "^0.4.0",

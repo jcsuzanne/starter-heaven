@@ -1,6 +1,12 @@
 @charset "utf-8";
 
-/* BASE -
+/* STARTER -
+========================================================================== */
+@import "starter/reset.scss";
+@import "starter/utils.scss";
+@import "starter/gcolumns.scss";
+
+/* BASE 1 -
 ========================================================================== */
 @import "base/fonts.scss";
 @import "base/variables.scss";
@@ -9,29 +15,31 @@
 ========================================================================== */
 @import "../../node_modules/mixins-sass/src/mixins.scss";
 @import "vendor/griddle";
-@import "vendor/icomoon.scss";
+// @import "vendor/icomoon/style.scss";
 // @import "vendor/sprite.scss";
 //@import "../../node_modules/family-sass/source/src/family.scss";
 
-/* HELPERS -
+/* BASE 2 -
 ========================================================================== */
 @import "base/mixins.scss";
 @import "base/placeholders.scss";
-@import "framework/breakpoints.scss";
-@import "framework/animation.scss";
+@import "base/breakpoints.scss";
 
-/* PARTIALS - buttons, figures, typography, etc...
+/* COMMON - buttons, figures, typography, etc...
 ========================================================================== */
-@import "partials/buttons.scss";
-@import "partials/icons.scss";
-@import "partials/typography.scss";
+@import "common/animation.scss";
+@import "common/buttons.scss";
+@import "common/grid.scss";
+@import "common/icons.scss";
+@import "common/typography.scss";
 
-/* FRAMEWORK - header, content, sidebar, and footer components
+/* SKELETON - header, content, sidebar, and footer components
 ========================================================================== */
-
-@import "framework/grid.scss";
-@import "framework/layout.scss";
-@import "framework/navigation.scss";
+// @import "skeleton/footer.scss";
+// @import "skeleton/header.scss";
+@import "skeleton/layout.scss";
+@import "skeleton/navigation.scss";
+// @import "skeleton/ui.scss";
 
 /* MODULES - Re-usable site elements.
 ========================================================================== */

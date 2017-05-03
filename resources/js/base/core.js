@@ -29,6 +29,9 @@ var
 ,   allowPreventTouch   = true
 ,   canAjax             = true
 ,   EVENTS              = {}
+,   killbounceTiming    = 10
+,   waypointsIntances   = []
+,   heavenHistory = {}
 ;
 
 (function(window, document, undefined) {

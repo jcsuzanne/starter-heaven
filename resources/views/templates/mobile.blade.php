@@ -14,7 +14,7 @@
     @include('partials.analytics')
 </head>
 <body class="page-{!! $jscontroller !!}" data-controller="{!! $jscontroller !!}">
-<div id="master">
+<div id="master" class="page-{!! $jscontroller !!}" data-controller="{!! $jscontroller !!}">
     <!-- view -->
     <section id="main-content" role="main" data-controller="{!! $jscontroller !!}">{!! $view !!}</section>
 </div>

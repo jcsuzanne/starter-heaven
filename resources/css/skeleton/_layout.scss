@@ -1,0 +1,27 @@
+// Master //
+#master
+{
+    height: auto;
+    min-height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+// RESPONSIVE //
+.v-desktoptablet
+{
+    display: block;
+    @include mq-mobile
+    {
+        display: none !important;
+    }
+}
+.v-mobile
+{
+    display: none;
+    @include mq-mobile
+    {
+        display: block !important;
+    }
+}

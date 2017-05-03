@@ -32,16 +32,16 @@ module.exports = {
     }
     ,
     sass: {
-        src: src + "/precss/builder.{sass,scss}",
-        srcWatch: src + "/precss/**/*.{sass,scss}",
+        src: src + "/css/builder.{sass,scss}",
+        srcWatch: src + "/css/**/*.{sass,scss}",
         dest: dest,
         file: fileCSS,
         filemin: fileminCSS,
         compability : compatibilityDesktop
     },
     sassMobile: {
-        src: src + "/precss/builder-mobile.{sass,scss}",
-        srcWatch: src + "/precss/**/*.{sass,scss}",
+        src: src + "/css/builder-mobile.{sass,scss}",
+        srcWatch: src + "/css/**/*.{sass,scss}",
         dest: dest,
         file: fileCSSMobile,
         filemin: fileminCSSMobile,
@@ -99,7 +99,7 @@ module.exports = {
     },
     sprite: {
         src: src + '/sprite/*.png',
-        destCSS: src + '/precss/vendor',
+        destCSS: src + '/css/vendor',
         destImg: destImg + '/common/',
         imgName: 'sprite.png',
         cssName: 'sprite.scss',

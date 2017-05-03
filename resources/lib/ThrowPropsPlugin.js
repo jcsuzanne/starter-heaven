@@ -1,13 +1,13 @@
 /*!
- * VERSION: 0.9.9
- * DATE: 2015-04-28
+ * VERSION: 0.9.11
+ * DATE: 2016-05-24
  * UPDATES AND DOCS AT: http://greensock.com
  *
- * @license Copyright (c) 2008-2015, GreenSock. All rights reserved.
+ * @license Copyright (c) 2008-2016, GreenSock. All rights reserved.
  * ThrowPropsPlugin is a Club GreenSock membership benefit; You must have a valid membership to use
  * this code without violating the terms of use. Visit http://greensock.com/club/ to sign up or get more details.
  * This work is subject to the software agreement that was issued with your membership.
- * 
+ *
  * @author: Jack Doyle, jack@greensock.com
  */
 var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || window; //helps ensure compatibility with AMD/RequireJS and CommonJS/Node
@@ -16,7 +16,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 	"use strict";
 
 	_gsScope._gsDefine("plugins.ThrowPropsPlugin", ["plugins.TweenPlugin", "TweenLite", "easing.Ease", "utils.VelocityTracker"], function(TweenPlugin, TweenLite, Ease, VelocityTracker) {
-		
+
 		var ThrowPropsPlugin = function(props, priority) {
 				TweenPlugin.call(this, "throwProps");
 				this._overwriteProps.length = 0;
@@ -175,11 +175,11 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 			},
 			p = ThrowPropsPlugin.prototype = new TweenPlugin("throwProps"),
 			_cssProxy, _cssVars, _last, _lastValue; //these serve as a cache of sorts, recording the last css-related proxy and the throwProps vars that get calculated in the _cssRegister() method. This allows us to grab them in the ThrowPropsPlugin.to() function and calculate the duration. Of course we could have structured things in a more "clean" fashion, but performance is of paramount importance.
-			
+
 
 
 		p.constructor = ThrowPropsPlugin;
-		ThrowPropsPlugin.version = "0.9.9";
+		ThrowPropsPlugin.version = "0.9.11";
 		ThrowPropsPlugin.API = 2;
 		ThrowPropsPlugin._autoCSS = true; //indicates that this plugin can be inserted into the "css" object using the autoCSS feature of TweenLite
 		ThrowPropsPlugin.defaultResistance = 100;
@@ -284,7 +284,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 			}});
 		};
 
-		
+
 		ThrowPropsPlugin.to = function(target, vars, maxDuration, minDuration, overshootTolerance) {
 			if (!vars.throwProps) {
 				vars = {throwProps:vars};
@@ -311,7 +311,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 				return tween;
 			}
 		};
-		
+
 		p._onInitTween = function(target, value, tween) {
 			this.target = target;
 			this._props = [];
@@ -370,7 +370,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 			}
 			return true;
 		};
-		
+
 		p._kill = function(lookup) {
 			var i = this._props.length;
 			while (--i > -1) {
@@ -380,7 +380,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 			}
 			return TweenPlugin.prototype._kill.call(this, lookup);
 		};
-		
+
 		p._roundProps = function(lookup, value) {
 			var p = this._props,
 				i = p.length;
@@ -390,28 +390,30 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 				}
 			}
 		};
-		
+
 		p.setRatio = function(v) {
-			var i = this._props.length, 
+			var i = this._props.length,
 				cp, val;
 			while (--i > -1) {
 				cp = this._props[i];
 				val = cp.s + cp.c1 * v + cp.c2 * v * v;
 				if (cp.r) {
 					val = Math.round(val);
+				} else if (v === 1) {
+					val = ((val * 10000 + (val < 0 ? -0.5 : 0.5)) | 0) / 10000; //if we don't round things at the very end, binary math issues can creep in and cause snapping not to be exact (like landing on 20.000000000001 instead of 20).
 				}
 				if (cp.f) {
 					this.target[cp.p](val);
 				} else {
 					this.target[cp.p] = val;
 				}
-			}	
+			}
 		};
-		
+
 		TweenPlugin.activate([ThrowPropsPlugin]);
-		
+
 		return ThrowPropsPlugin;
-		
+
 	}, true);
 
 
@@ -639,7 +641,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 		return (_gsScope.GreenSockGlobals || _gsScope)[name];
 	};
 	if (typeof(define) === "function" && define.amd) { //AMD
-		define(["TweenLite"], getGlobal);
+		define(["../TweenLite"], getGlobal);
 	} else if (typeof(module) !== "undefined" && module.exports) { //node
 		require("../TweenLite.js");
 		module.exports = getGlobal();

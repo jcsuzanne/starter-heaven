@@ -82,6 +82,15 @@
     }
 }
 
+@mixin vs-scroll-context
+{
+    .is-native-scroll.y-scroll &
+    {
+        @content;
+    }
+}
+
+
 // From https://css-tricks.com/snippets/css/media-queries-for-standard-devices/
 @mixin mq-tablet
 {
