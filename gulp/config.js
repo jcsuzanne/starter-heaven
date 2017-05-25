@@ -1,5 +1,5 @@
-var dest                    =   "./public/assets/build";
-var destImg                 =   "./public/assets/img";
+var dest                    =   "./public/build";
+var destImg                 =   "./public/img";
 var destRoot                =   "./public/";
 var src                     =   './resources';
 var fileCSS                 =   'front.css';
@@ -23,8 +23,7 @@ module.exports = {
     ,
     jstop: {
         src: [
-            './node_modules/modernizr/src/modernizr.custom.js',
-            './node_modules/detectizr/dist/detectizr.min.js'
+            './resources/js/_top/modernizr.js',
         ],
         dest: dest,
         file: 'top.js',
@@ -48,42 +47,11 @@ module.exports = {
         compability: compatibilityMobile
     },
     javascript: {
-        src: [
-            'node_modules/json2/json2.js',
-            'node_modules/jquery/dist/jquery.min.js',
-            'node_modules/jquery-enhance/src/jquery.enhance.js',
-            'node_modules/jquery-mousewheel/jquery.mousewheel.js',
-            'node_modules/jquery-smartresize/jquery.throttledresize.js',
-            // 'node_modules/historyjs/scripts/bundled/html5/jquery.history.js',
-            'node_modules/kickstarter/src/kickstarter.js',
-            'node_modules/gsap/src/minified/TweenMax.min.js',
-            'node_modules/raf/src/raf.js',
-            'node_modules/js-toolbox/src/toolbox.js',
-            'resources/js/class/context.js',
-            'resources/js/class/transition.js',
-            'resources/js/base/core.js',
-            'resources/js/framework/layout.js',
-            'resources/js/view/home.js',
-            'resources/js/base/app.js'
-        ],
-        srcMobile: [
-            'node_modules/json2/json2.js',
-            'node_modules/jquery/dist/jquery.min.js',
-            'node_modules/jquery-enhance/src/jquery.enhance.js',
-            'node_modules/kickstarter/src/kickstarter.js',
-            'node_modules/gsap/src/minified/TweenMax.min.js',
-            'node_modules/js-toolbox/src/toolbox.js',
-            'resources/js/class/transition.js',
-            'resources/js/base/core.js',
-            'resources/js/framework/layout.js',
-            'resources/js/view/home.js',
-        ],
+        src: 'resources/js/app.js',
         srcWatch : src + '/js/**/*.js',
         dest: dest,
         file: fileJS,
-        fileMobile: fileJSMobile,
-        filemin: fileminJS,
-        fileminMobile: fileminJSMobile
+        filemin: fileminJS
     },
     minify: {
         dest: dest,
