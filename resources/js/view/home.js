@@ -1,38 +1,32 @@
-(function(window, document, undefined) {
-    'use strict';
+'use strict';
+import Barba from 'barba.js';
+import $ from 'jquery';
+import Env from '../base/env.js';
 
-    SITE.home = (function()
+let page
+
+class Home
+{
+    constructor(view='')
     {
-        var
-        klassName = '.layout-home'
+        this.classView = 'currentView--home'
+    }
+}
 
-        var DOM = function(_view)
+page = Barba.BaseView.extend({
+    namespace: 'home',
+    node: undefined,
+    onEnter: function() {
+        this.node = new Home(this.container)
+        Env.$html.classList.add(this.node.classView)
+    },
+    onLeaveCompleted: function()
+    {
+        if(this.container.getAttribute('data-namespace') != this.namespace)
         {
-            this.view = (typeof _view != 'undefined')?_view.find(klassName):$(klassName);
-            this.init();
+            Env.$html.classList.remove(this.node.classView)
         }
-        DOM.prototype = {
-            init : function()
-            {
+    }
+});
 
-            }
-        }
-
-        var init = function()
-        {
-            new DOM($mainContent);
-            _k.publish('context::dom::ready',$mainContent)
-        }
-
-        var after = function(_view)
-        {
-            new DOM(_view);
-        }
-
-        return {
-                init : init
-            ,   after : after
-        }
-    })();
-
-}(window, document));
+export default page;

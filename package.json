@@ -1,50 +1,34 @@
 {
   "name": "starter-heaven",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/jcsuzanne/starter-heaven"
   },
-  "files": [
-    "src/css/com.reset.css",
-    "src/css/com.utils.css",
-    "src/css/lib.gcolumns.css",
-    "src/precss/_griddle-build.scss",
-    "src/precss/_griddle.scss",
-    "src/precss/adapt.all.scss",
-    "src/precss/base.param.scss",
-    "src/precss/builder.scss",
-    "src/precss/com.animation.scss",
-    "src/precss/com.core.scss",
-    "src/precss/com.skin.scss",
-    "src/precss/lib.icomoon.scss",
-    "src/js/app.js",
-    "src/js/com.core.js",
-    "src/js/com.layout.js",
-    "src/js/com.preload.js",
-    "src/js/com.transition.js"
-  ],
   "scripts": {
     "install": "napa"
   },
   "napa": {
-    "json2": "douglascrockford/JSON-js",
     "jquery-smartresize": "louisremi/jquery-smartresize",
     "detectizr": "barisaydinoglu/Detectizr",
-    "modernizr": "jcsuzanne/modernizr.custom",
     "raf": "jcsuzanne/raf",
     "jquery-enhance": "jcsuzanne/jquery-enhance",
-    "kickstarter": "jcsuzanne/kickstarter",
     "mixins-sass": "jcsuzanne/mixins-sass#master",
     "js-toolbox": "jcsuzanne/js-toolbox",
-    "family-sass": "LukyVj/family.scss"
+    "family-sass": "LukyVj/family.scss",
+    "waypoints-export": "summerisgone/waypoints"
   },
   "devDependencies": {
+    "babel-preset-env": "^1.4.0",
+    "babelify": "^7.3.0",
+    "barba.js": "^1.0.0",
     "blast-text": "^2.0.0",
+    "browserify": "^14.3.0",
+    "browserify-shim": "^3.8.14",
     "gsap": "latest",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
-    "gulp-clean-css": "^2.0.12",
+    "gulp-clean-css": "^3.2.0",
     "gulp-concat": "^2.6.0",
     "gulp-concat-css": "^2.3.0",
     "gulp-connect": "^4.0.0",
@@ -65,11 +49,12 @@
     "gulp-uglify": "^1.5.3",
     "gulp.spritesmith": "^6.2.1",
     "hammerjs": "^2.0.8",
-    "historyjs": "^1.8.0-b2",
     "jquery": "latest",
     "jquery-mousewheel": "3.1.13",
+    "modernizr": "^3.5.0",
     "napa": "^2.3.0",
     "require-dir": "^0.3.0",
+    "vinyl-source-stream": "^1.1.0",
     "waypoints": "^4.0.0"
   },
   "author": "jean-christophe suzanne",

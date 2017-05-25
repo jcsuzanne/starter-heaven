@@ -18,6 +18,8 @@ rsync -av resources ../
 mv app/Http/Middleware/Caramel.php ../app/Http/Middleware/
 cd ../
 rm -R resources/assets
+rm  resources/views/welcome.blade.php
+rm  resources/views/templates/mobile.blade.php
 rm -R resources/views/vendor
 rm -R starter-heaven-master
 rm master.zip

@@ -1,1 +1,0 @@
-<script type="text/javascript" src="<?= URL::asset('assets/build/front'.Config::get('app.minify').'.js') ?>"></script>
