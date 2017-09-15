@@ -24,6 +24,7 @@ class BrowserDetection
         Env.mobile = !!md.mobile()
         Env.phone = !!md.phone()
         Env.tablet = !!md.tablet()
+        Env.ios = (md.mobile() == 'iPhone' == true || md.tablet() == 'iPad' == true)?true:false
 
         if(Env.mobile == false) Env.desktop = true
 

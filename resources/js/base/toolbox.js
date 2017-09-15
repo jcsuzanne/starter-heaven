@@ -50,6 +50,11 @@ class Toolbox
         }
     }
 
+    guid()
+    {
+        return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase();
+    }
+
     pushGA(url=window.location.href)
     {
         // Inform Google Analytics of the change

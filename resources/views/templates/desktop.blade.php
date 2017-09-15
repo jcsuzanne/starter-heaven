@@ -13,6 +13,7 @@
     <!-- view start -->
     <div class="main-content" id="barba-wrapper" role="main">{!! $view !!}</div>
     <!-- view end -->
+    <div class="main-transition" id="jsView--transition"></div>
 </div>
 @include('partials.scripts')
 </body>

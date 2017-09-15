@@ -81,7 +81,7 @@ module.exports = {
     },
     svg: {
         src: src + "/svg/**.svg",
-        dest: destRoot + "assets/svg/"
+        dest: destRoot + "/svg/"
     },
     views: {
         srcWatch : './resources/views/**',

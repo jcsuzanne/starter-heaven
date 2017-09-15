@@ -14,10 +14,14 @@ class OuterHeaven
         }
         Barba.Pjax.start();
         Barba.Dispatcher.on('linkClicked', function() {
-            Channels.emit('statechange::before')
+
         });
-        Barba.Dispatcher.on('newPageReady', function() {
-            Channels.emit('statechange::ready')
+        Barba.Dispatcher.on('initStateChange',()=>
+        {
+            Channels.emit('statechange::before')
+        })
+        Barba.Dispatcher.on('newPageReady', function(current,old,container) {
+            Channels.emit('statechange::ready',current,old,container)
         });
     }
 }

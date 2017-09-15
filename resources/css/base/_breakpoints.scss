@@ -76,7 +76,7 @@
 
 @mixin ios-recent
 {
-    .iphone.safari.ios10 &,.iphone.safari.ios9 &,.iphone.safari.ios8 &
+    .iphone.safari.ios11 &,.iphone.safari.ios10 &,.iphone.safari.ios9 &,.iphone.safari.ios8 &
     {
         @content;
     }
@@ -85,6 +85,47 @@
 @mixin vs-scroll-context
 {
     .is-native-scroll.y-scroll &
+    {
+        @content;
+    }
+}
+
+
+@mixin mainnav-opened
+{
+    .mainnav--isOpened &
+    {
+        @content;
+    }
+}
+
+@mixin skin-white
+{
+    .skin--isWhite &
+    {
+        @content;
+    }
+}
+
+@mixin skin-dark
+{
+    .skin--isDark &
+    {
+        @content;
+    }
+}
+
+@mixin env-touch
+{
+    .mobile &,.tablet &
+    {
+        @content;
+    }
+}
+
+@mixin ui-isReady
+{
+    .ui--isReady &
     {
         @content;
     }
@@ -106,10 +147,6 @@
         and (min-device-width: 768px)
         and (max-device-width: 1024px)
         and (-webkit-min-device-pixel-ratio: 2)
-    ,
-    // galaxy tab
-        (min-device-width: 800px)
-        and (max-device-width: 1280px)
     ,
     // nexus
     screen
@@ -150,11 +187,6 @@
         and (min-device-width: 768px)
         and (max-device-width: 1024px)
         and (-webkit-min-device-pixel-ratio: 2)
-        and (orientation: portrait)
-    ,
-    // galaxy tab
-        (min-device-width: 800px)
-        and (max-device-width: 1280px)
         and (orientation: portrait)
     ,
     // nexus
@@ -198,11 +230,6 @@
         and (min-device-width: 768px)
         and (max-device-width: 1024px)
         and (-webkit-min-device-pixel-ratio: 2)
-        and (orientation: landscape)
-    ,
-    // galaxy tab
-        (min-device-width: 800px)
-        and (max-device-width: 1280px)
         and (orientation: landscape)
     ,
     // nexus
@@ -277,10 +304,92 @@
         and (device-height: 592px)
         and (-webkit-device-pixel-ratio: 3)
     {
-        // .mobile &
-        // {
-            @content;
-        // }
+        @content;
+    }
+}
 
+@mixin mq-responsiveMobile
+{
+    @media
+    only screen
+    and (max-width: 767px)
+    {
+        @content;
+    }
+}
+
+@mixin mq-responsiveMobileLandscape
+{
+    @media
+    only screen
+    and (max-width: 767px)
+    and (orientation: landscape)
+    {
+        @content;
+    }
+}
+
+
+@mixin mq-responsiveTablet
+{
+    @media
+    only screen
+    and (min-width: 768px)
+    and (max-width: 1024px)
+    ,
+    // tablet wider
+    only screen
+    and (min-device-width: 800px)
+    and (max-device-width: 1280px)
+    and (-webkit-min-device-pixel-ratio: 1.5)
+    {
+        @content;
+    }
+}
+
+@mixin mq-responsiveTabletAndMobile
+{
+    @media
+    only screen
+    and (max-width: 1024px)
+    ,
+    // tablet wider
+    only screen
+    and (max-device-width: 1280px)
+    and (-webkit-min-device-pixel-ratio: 1.5)
+    {
+        @content;
+    }
+}
+
+
+
+@mixin mq-responsiveTabletPortrait
+{
+    @media
+    only screen
+    and (min-width: 768px)
+    and (max-width: 1024px)
+    and (orientation: portrait)
+    ,
+    // tablet wider
+    only screen
+    and (min-device-width: 800px)
+    and (max-device-width: 1280px)
+    and (-webkit-min-device-pixel-ratio: 1.5)
+    and (orientation: portrait)
+    ,
+    only screen
+    and (max-width: 767px)
+    {
+        @content;
+    }
+}
+
+@mixin mq-forceTablet
+{
+    .tablet &
+    {
+        @content;
     }
 }

@@ -9,19 +9,66 @@
 }
 
 // RESPONSIVE //
+.v-desktop
+{
+    display: block;
+    @include mq-responsiveTablet
+    {
+        display: none;
+    }
+    @include mq-responsiveMobile
+    {
+        display: none;
+    }
+}
+.v-tablet
+{
+    display: none;
+    @include mq-responsiveTablet
+    {
+        display: block;
+    }
+    @include mq-responsiveMobile
+    {
+        display: none;
+    }
+}
+
 .v-desktoptablet
 {
     display: block;
-    @include mq-mobile
+    @include mq-responsiveMobile
     {
         display: none !important;
     }
 }
-.v-mobile
+
+.v-tabletportrait
 {
     display: none;
-    @include mq-mobile
+    @include mq-responsiveTabletPortrait
     {
         display: block !important;
     }
+}
+
+.v-mobile
+{
+    display: none;
+    @include mq-responsiveMobile
+    {
+        display: block !important;
+    }
+}
+
+// Z VIEWS
+.zview-foreground
+{
+    position: relative;
+    z-index: 1;
+}
+.zview-background
+{
+    position: relative;
+    z-index: 0;
 }
