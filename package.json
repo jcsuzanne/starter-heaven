@@ -6,7 +6,9 @@
     "url": "https://github.com/jcsuzanne/starter-heaven"
   },
   "scripts": {
-    "install": "napa"
+    "install": "napa",
+    "build": "gulp build",
+    "watch": "gulp watch"
   },
   "napa": {
     "jquery-smartresize": "louisremi/jquery-smartresize",
