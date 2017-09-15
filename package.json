@@ -59,7 +59,7 @@
     "scroll-restoration-polyfill": "^0.6.1",
     "director": "^1.2.8",
     "wheel-indicator": "^1.1.4",
-    "wheel-inertia":"^0.0.2"
+    "wheel-inertia":"0.0.2"
 
   },
   "author": "jean-christophe suzanne",
