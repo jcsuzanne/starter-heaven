@@ -14,6 +14,8 @@ let env = {
     mobile: false,
     desktop: false,
     ios: false,
+    ie11: false,
+    edge:false,
     orientation: false,
     isVisiting: false,
     isOldie: false,

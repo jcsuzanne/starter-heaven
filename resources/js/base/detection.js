@@ -28,6 +28,11 @@ class BrowserDetection
 
         if(Env.mobile == false) Env.desktop = true
 
+        Env.ie11 = !!navigator.userAgent.match(/Trident\/7\./)
+        if(Env.ie11 == true) Env.$html.classList.add('ie11')
+
+        Env.edge = (window.navigator.userAgent.indexOf("Edge") > -1)?true:false
+
         Env.$html.classList.remove('desktop')
         Env.$html.classList.remove('tablet')
         Env.$html.classList.remove('mobile')

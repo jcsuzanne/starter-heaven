@@ -40,6 +40,13 @@ class Toolbox
         return states[index] || 'desktop';
     }
 
+    getTransformValues(element)
+    {
+        const style = window.getComputedStyle(element);
+        const matrix = new WebKitCSSMatrix(style.webkitTransform);
+        return {x:matrix.m41,y:matrix.m42}
+    }
+
     getViewport()
     {
         return {
@@ -76,8 +83,16 @@ class Toolbox
     resetContext()
     {
         Channels.on('statechange::before',() => {
-            Channels.removeAllListeners('window::smartresize');
+
         })
+    }
+
+    scrollPosition()
+    {
+        const getViewport = this.getViewport()
+        const pageHeight = Math.round(Env.$master.getBoundingClientRect().height - getViewport.height)
+        const getScrollY = (document.documentElement && document.documentElement.scrollTop) || Env.$body.scrollTop
+        return {scrollY:getScrollY,fullPageHeight: pageHeight}
     }
 
     newContextIsReady()

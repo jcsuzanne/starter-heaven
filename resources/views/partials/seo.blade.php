@@ -9,9 +9,7 @@ $img = (isset($metaImg))?$metaImg:$shared['global']['metaImg'];
 <meta property="og:url" content="{{ URL::current() }}">
 <meta property="og:description" content="{{ $description }}">
 <meta property="og:image" content="{{ $img }}" />
-<meta property="og:image:type" content="image/png" />
-<meta property="og:image:width" content="800" />
-<meta property="og:image:height" content="600" />
+<meta property="og:image:type" content="image/jpeg" />
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="{!! $shared['global']['social']['twitter_site'] !!}">
