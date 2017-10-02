@@ -89,9 +89,23 @@ class Toolbox
 
     scrollPosition()
     {
+        /*https://developer.mozilla.org/fr/docs/Web/API/document/scrollingElement*/
+        let getScrollY;
         const getViewport = this.getViewport()
         const pageHeight = Math.round(Env.$master.getBoundingClientRect().height - getViewport.height)
-        const getScrollY = (document.documentElement && document.documentElement.scrollTop) || Env.$body.scrollTop
+        if(document.scrollingElement && document.scrollingElement.scrollTop)
+        {
+            getScrollY = document.scrollingElement.scrollTop
+        }
+        else if(document.documentElement && document.documentElement.scrollTop)
+        {
+            getScrollY = document.documentElement.scrollTop
+        }
+        else
+        {
+            getScrollY = Env.$body.scrollTop
+        }
+        // const getScrollY = (document.documentElement && document.documentElement.scrollTop) || Env.$body.scrollTop
         return {scrollY:getScrollY,fullPageHeight: pageHeight}
     }
 
