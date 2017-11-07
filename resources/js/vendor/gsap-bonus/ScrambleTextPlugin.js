@@ -1,6 +1,6 @@
 /*!
- * VERSION: 0.4.0
- * DATE: 2017-01-17
+ * VERSION: 0.5.1
+ * DATE: 2017-07-20
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2017, GreenSock. All rights reserved.
@@ -40,7 +40,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 				return s;
 			},
 			CharSet = function(chars) {
-				this.chars = chars.split("");
+				this.chars = _emojiSafeSplit(chars);
 				this.sets = [];
 				this.length = 50;
 				var i;
@@ -54,6 +54,12 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 					this.length = newLength;
 				};
 			},
+			_emoji = "[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D]|[\uD800-\uDBFF][\uDC00-\uDFFF]",
+			_emojiExp = new RegExp(_emoji),
+			_emojiAndCharsExp = new RegExp(_emoji + "|.", "g"),
+			_emojiSafeSplit = function(text, delimiter) {
+				return ((delimiter === "" || !delimiter) && _emojiExp.test(text)) ? text.match(_emojiAndCharsExp) : text.split(delimiter || "");
+			},
 			_upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 			_lower = _upper.toLowerCase(),
 			_charsLookup = {
@@ -61,9 +67,12 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 				lowerCase: new CharSet(_lower),
 				upperAndLowerCase: new CharSet(_upper + _lower)
 			},
+
+
+
 			ScrambleTextPlugin = _gsScope._gsDefine.plugin({
 				propName: "scrambleText",
-				version: "0.4.0",
+				version: "0.5.1",
 				API: 2,
 				overwriteProps:["scrambleText","text"],
 
@@ -80,10 +89,13 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 					if (typeof(value) !== "object") {
 						value = {text:value};
 					}
-					var delim, i, maxLength, charset;
+					var delim, maxLength, charset, splitByChars;
 					this._delimiter = delim = value.delimiter || "";
-					this._original = _getText(target).replace(/\s+/g, " ").split("&nbsp;").join("").split(delim);
-					this._text = (value.text || value.value || "").replace(/\s+/g, " ").split(delim);
+					this._original = _emojiSafeSplit(_getText(target).replace(/\s+/g, " ").split("&nbsp;").join(""), delim);
+					if (value.text === "{original}" || value.text === true || value.text == null) {
+						value.text = this._original.join(delim);
+					}
+					this._text = _emojiSafeSplit((value.text || value.value || "").replace(/\s+/g, " "), delim);
 					this._hasClass = false;
 					if (typeof(value.newClass) === "string") {
 						this._newClass = value.newClass;
@@ -93,9 +105,11 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 						this._oldClass = value.oldClass;
 						this._hasClass = true;
 					}
-					i = this._text.length - this._original.length;
-					this._length = this._original.join(delim).length;
-					this._lengthDif = this._text.join(delim).length - this._length;
+					splitByChars = (delim === "");
+					this._textHasEmoji = (_emojiExp.test(this._text.join(delim)) && splitByChars);
+					this._charsHaveEmoji = !!value.chars && _emojiExp.test(value.chars);
+					this._length = splitByChars ? this._original.length : this._original.join(delim).length;
+					this._lengthDif = (splitByChars ? this._text.length : this._text.join(delim).length) - this._length;
 					this._fillChar = value.fillChar || (value.chars && value.chars.indexOf(" ") !== -1) ? "&nbsp;" : "";
 					this._charSet = charset = _charsLookup[(value.chars || "upperCase")] || new CharSet(value.chars);
 					this._speed = 0.016 / (value.speed || 1);
@@ -119,7 +133,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 						delim = this._delimiter,
 						time = this._tween._time,
 						timeDif = time - this._prevScrambleTime,
-						i, startText, endText, applyNew, applyOld, str, startClass, endClass;
+						i, i2, startText, endText, applyNew, applyOld, str, startClass, endClass;
 					if (this._revealDelay) {
 						if (this._tween.vars.runBackwards) {
 							time = this._tween._duration - time; //invert the time for from() tweens
@@ -151,13 +165,23 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 							startText = "";
 							endText = this._original.join(delim);
 						} else {
-							startText = endText.substr(0, ((this._length + (this._tweenLength ? 1 - (ratio * ratio * ratio) : 1) * this._lengthDif) - (l - i) + 0.5) | 0);
-							endText = this._text.slice(i).join(delim);
+							str = this._text.slice(i).join(delim);
+							if (this._charsHaveEmoji) {
+								startText = _emojiSafeSplit(endText).slice(0, ((this._length + (this._tweenLength ? 1 - (ratio * ratio * ratio) : 1) * this._lengthDif) - ((this._textHasEmoji ? _emojiSafeSplit(str) : str).length) + 0.5) | 0).join("");
+							} else {
+								startText = endText.substr(0, ((this._length + (this._tweenLength ? 1 - (ratio * ratio * ratio) : 1) * this._lengthDif) - ((this._textHasEmoji ? _emojiSafeSplit(str) : str).length) + 0.5) | 0);
+							}
+							endText = str;
 						}
 
 					} else {
 						startText = this._text.slice(0, i).join(delim);
-						endText = endText.substr(i, ((this._length + (this._tweenLength ? 1 - ((ratio = 1 - ratio) * ratio * ratio * ratio) : 1) * this._lengthDif) - i + 0.5) | 0);
+						i2 = (this._textHasEmoji ? _emojiSafeSplit(startText) : startText).length;
+						if (this._charsHaveEmoji) {
+							endText = _emojiSafeSplit(endText).slice(i2, ((this._length + (this._tweenLength ? 1 - ((ratio = 1 - ratio) * ratio * ratio * ratio) : 1) * this._lengthDif) + 0.5) | 0).join("");
+						} else {
+							endText = endText.substr(i2, ((this._length + (this._tweenLength ? 1 - ((ratio = 1 - ratio) * ratio * ratio * ratio) : 1) * this._lengthDif) - i2 + 0.5) | 0);
+						}
 					}
 
 					if (this._hasClass) {
@@ -190,10 +214,10 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 	var getGlobal = function() {
 		return (_gsScope.GreenSockGlobals || _gsScope)[name];
 	};
-	if (typeof(define) === "function" && define.amd) { //AMD
-		define(["./TweenLite"], getGlobal);
-	} else if (typeof(module) !== "undefined" && module.exports) { //node
-		require("./TweenLite.js");
+	if (typeof(module) !== "undefined" && module.exports) { //node
+		require("gsap/TweenLite");
 		module.exports = getGlobal();
+	} else if (typeof(define) === "function" && define.amd) { //AMD
+		define(["gsap/TweenLite"], getGlobal);
 	}
 }("ScrambleTextPlugin"));

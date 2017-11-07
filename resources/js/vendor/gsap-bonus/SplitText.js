@@ -1,6 +1,6 @@
 /*!
- * VERSION: 0.5.6
- * DATE: 2017-01-17
+ * VERSION: 0.5.8
+ * DATE: 2017-08-22
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2017, GreenSock. All rights reserved.
@@ -212,7 +212,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 					isChild = (node.parentNode === element);
 					if (isChild || absolute || (chars && !words)) {
 						offset = node.offsetTop;
-						if (lines && isChild && Math.abs(offset - lineOffsetY) > lineThreshold && node.nodeName !== "BR") { //we found some rare occasions where a certain character like &#8209; could cause the offsetTop to be off by 1 pixel, so we build in a threshold.
+						if (lines && isChild && Math.abs(offset - lineOffsetY) > lineThreshold && (node.nodeName !== "BR" || i === 0)) { //we found some rare occasions where a certain character like &#8209; could cause the offsetTop to be off by 1 pixel, so we build in a threshold.
 							curLine = [];
 							lines.push(curLine);
 							lineOffsetY = offset;
@@ -231,7 +231,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 									node._wordEnd = true;
 								}
 							}
-							if (node.nodeName === "BR" && node.nextSibling && node.nextSibling.nodeName === "BR") { //two consecutive <br> tags signify a new [empty] line.
+							if (node.nodeName === "BR" && ((node.nextSibling && node.nextSibling.nodeName === "BR") || i === 0)) { //two consecutive <br> tags signify a new [empty] line. Also, if the entire block of content STARTS with a <br>, add a line.
 								lines.push([]);
 							}
 						}
@@ -397,7 +397,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 		_splitRawText = function(element, vars, wordStart, charStart) {
 			var tag = vars.span ? "span" : "div",
 				types = vars.type || vars.split || "chars,words,lines",
-				words = (types.indexOf("words") !== -1),
+				//words = (types.indexOf("words") !== -1),
 				chars = (types.indexOf("chars") !== -1),
 				absolute = (vars.position === "absolute" || vars.absolute === true),
 				wordDelimiter = vars.wordDelimiter || " ",
@@ -495,7 +495,6 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 		this._originals.length = this.chars.length = this.words.length = this.lines.length = 0;
 		var i = this.elements.length,
 			tag = vars.span ? "span" : "div",
-			absolute = (vars.position === "absolute" || vars.absolute === true),
 			wordStart = _cssClassFunc(vars.wordsClass, tag),
 			charStart = _cssClassFunc(vars.charsClass, tag),
 			origHeight, origWidth, e;
@@ -538,7 +537,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 		}
 		return (typeof(document) === "undefined") ? e : (document.querySelectorAll ? document.querySelectorAll(e) : document.getElementById((e.charAt(0) === "#") ? e.substr(1) : e));
 	};
-	SplitText.version = "0.5.6";
+	SplitText.version = "0.5.8";
 	
 })(_gsScope);
 
@@ -548,9 +547,9 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 	var getGlobal = function() {
 		return (_gsScope.GreenSockGlobals || _gsScope)[name];
 	};
-	if (typeof(define) === "function" && define.amd) { //AMD
-		define([], getGlobal);
-	} else if (typeof(module) !== "undefined" && module.exports) { //node
+	if (typeof(module) !== "undefined" && module.exports) { //node
 		module.exports = getGlobal();
+	} else if (typeof(define) === "function" && define.amd) { //AMD
+		define([], getGlobal);
 	}
 }("SplitText"));

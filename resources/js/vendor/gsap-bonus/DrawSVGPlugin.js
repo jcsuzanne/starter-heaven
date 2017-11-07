@@ -1,6 +1,6 @@
 /*!
- * VERSION: 0.1.3
- * DATE: 2017-03-29
+ * VERSION: 0.1.5
+ * DATE: 2017-09-05
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2017, GreenSock. All rights reserved.
@@ -22,8 +22,8 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 		DrawSVGPlugin;
 
 	function getDistance(x1, y1, x2, y2, scaleX, scaleY) {
-		x2 = (parseFloat(x2) - parseFloat(x1)) * scaleX;
-		y2 = (parseFloat(y2) - parseFloat(y1)) * scaleY;
+		x2 = (parseFloat(x2 || 0) - parseFloat(x1 || 0)) * scaleX;
+		y2 = (parseFloat(y2 || 0) - parseFloat(y1 || 0)) * scaleY;
 		return Math.sqrt(x2 * x2 + y2 * y2);
 	}
 
@@ -94,7 +94,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 		} else if (type === "rect") {
 			length = bbox.width * 2 * scaleX + bbox.height * 2 * scaleY;
 		} else if (type === "line") {
-			length = getDistance(element.getAttribute("x1"), element.getAttribute("y1"), element.getAttribute("x2"), element.getAttribute("y2"), scaleX, scaleY);
+			length = getDistance(bbox.x, bbox.y, bbox.x + bbox.width, bbox.y + bbox.height, scaleX, scaleY);
 		} else if (type === "polyline" || type === "polygon") {
 			points = element.getAttribute("points").match(_numbersExp) || [];
 			if (type === "polygon") {
@@ -135,7 +135,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 	DrawSVGPlugin = _gsScope._gsDefine.plugin({
 		propName: "drawSVG",
 		API: 2,
-		version: "0.1.3",
+		version: "0.1.5",
 		global: true,
 		overwriteProps: ["drawSVG"],
 
@@ -206,10 +206,10 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 	var getGlobal = function() {
 		return (_gsScope.GreenSockGlobals || _gsScope)[name];
 	};
-	if (typeof(define) === "function" && define.amd) { //AMD
-		define(["gsap/TweenLite"], getGlobal);
-	} else if (typeof(module) !== "undefined" && module.exports) { //node
+	if (typeof(module) !== "undefined" && module.exports) { //node
 		require("gsap/TweenLite");
 		module.exports = getGlobal();
+	} else if (typeof(define) === "function" && define.amd) { //AMD
+		define(["gsap/TweenLite"], getGlobal);
 	}
 }("DrawSVGPlugin"));

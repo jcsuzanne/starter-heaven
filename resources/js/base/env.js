@@ -1,8 +1,7 @@
 'use strict';
-import $ from 'jquery';
 
 let env = {
-    $window: $(window),
+    $window: window,
     $html: document.getElementsByTagName("html")[0],
     $mainContent: document.getElementById('barba-wrapper'),
     $body: document.body,
@@ -12,6 +11,7 @@ let env = {
     framework: {},
     tablet: false,
     mobile: false,
+    phone: false,
     desktop: false,
     ios: false,
     ie11: false,

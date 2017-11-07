@@ -1,6 +1,6 @@
 /*!
- * VERSION: 0.8.8
- * DATE: 2017-01-17
+ * VERSION: 0.8.11
+ * DATE: 2017-04-29
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2017, GreenSock. All rights reserved.
@@ -23,6 +23,9 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 		_selectorExp = /(^[#\.]|[a-y][a-z])/gi,
 		_commands = /[achlmqstvz]/ig,
 		_scientific = /[\+\-]?\d*\.?\d+e[\+\-]?\d+/ig,
+		//_attrExp = /(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/gi, //finds all the attribute name/value pairs in an HTML element
+		//_outerTagExp = /^<([A-Za-z0-9_\-]+)((?:\s+[A-Za-z0-9_\-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/i, //takes the outerHTML and pulls out [0] - the first tag, [1] - the tag name, and [2] - the attribute name/value pairs (space-delimited)
+		//_wrappingQuotesExp = /^["']|["']$/g,
 		TweenLite = _gsScope._gsDefine.globals.TweenLite,
 		//_nonNumbersExp = /(?:([\-+](?!(\d|=)))|[^\d\-+=e]|(e(?![\-+][\d])))+/ig,
 
@@ -772,11 +775,13 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 		_createPath = function(e, ignore) {
 			var path = _gsScope.document.createElementNS("http://www.w3.org/2000/svg", "path"),
 				attr = Array.prototype.slice.call(e.attributes),
-				i = attr.length;
+				i = attr.length,
+				name;
 			ignore = "," + ignore + ",";
 			while (--i > -1) {
-				if (ignore.indexOf("," + attr[i].nodeName + ",") === -1) {
-					path.setAttributeNS(null, attr[i].nodeName, attr[i].nodeValue);
+				name = attr[i].nodeName.toLowerCase(); //in Microsoft Edge, if you don't set the attribute with a lowercase name, it doesn't render correctly! Super weird.
+				if (ignore.indexOf("," + name + ",") === -1) {
+					path.setAttributeNS(null, name, attr[i].nodeValue);
 				}
 			}
 			return path;
@@ -826,7 +831,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 				rcirc = r * circ;
 				data = "M" + (x+r) + "," + y + " C" + [x+r, y + rycirc, x + rcirc, y + ry, x, y + ry, x - rcirc, y + ry, x - r, y + rycirc, x - r, y, x - r, y - rycirc, x - rcirc, y - ry, x, y - ry, x + rcirc, y - ry, x + r, y - rycirc, x + r, y].join(",") + "z";
 			} else if (type === "line") {
-				data = "M" + e.getAttribute("x1") + "," + e.getAttribute("y1") + " L" + e.getAttribute("x2") + "," + e.getAttribute("y2");
+				data = "M" + (e.getAttribute("x1") || 0) + "," + (e.getAttribute("y1") || 0) + " L" + (e.getAttribute("x2") || 0) + "," + (e.getAttribute("y2") || 0);
 			} else if (type === "polyline" || type === "polygon") {
 				points = (e.getAttribute("points") + "").match(_numbersExp) || [];
 				x = points.shift();
@@ -875,7 +880,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 			propName: "morphSVG",
 			API: 2,
 			global: true,
-			version: "0.8.8",
+			version: "0.8.11",
 
 			//called when the tween renders for the first time. This is where initial values should be recorded and any setup routines should run.
 			init: function(target, value, tween, index) {
@@ -980,7 +985,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 		}
 		a = [];
 		l = bezier.length;
-		if (matrix) {
+		if (matrix && matrix.join(",") !== "1,0,0,1,0,0") {
 			for (i = 0; i < l; i+=2) {
 				a.push({x:prefix + (bezier[i] * matrix[0] + bezier[i+1] * matrix[2] + offsetX), y:prefix + (bezier[i] * matrix[1] + bezier[i+1] * matrix[3] + offsetY)});
 			}
@@ -1001,10 +1006,10 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 	var getGlobal = function() {
 		return (_gsScope.GreenSockGlobals || _gsScope)[name];
 	};
-	if (typeof(define) === "function" && define.amd) { //AMD
-		define(["gsap/TweenLite"], getGlobal);
-	} else if (typeof(module) !== "undefined" && module.exports) { //node
+	if (typeof(module) !== "undefined" && module.exports) { //node
 		require("gsap/TweenLite");
 		module.exports = getGlobal();
+	} else if (typeof(define) === "function" && define.amd) { //AMD
+		define(["gsap/TweenLite"], getGlobal);
 	}
 }("MorphSVGPlugin"));

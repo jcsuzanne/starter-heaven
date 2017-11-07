@@ -1,6 +1,6 @@
 /*!
- * VERSION: 0.2.1
- * DATE: 2017-01-17
+ * VERSION: 0.2.2
+ * DATE: 2017-06-19
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2017, GreenSock. All rights reserved.
@@ -318,7 +318,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 			return new CustomEase(id, data, config);
 		};
 
-		CustomEase.version = "0.2.1";
+		CustomEase.version = "0.2.2";
 
 		CustomEase.bezierToPoints = _bezierToPoints;
 		CustomEase.get = function (id) {
@@ -384,10 +384,10 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 	var getGlobal = function() {
 		return (_gsScope.GreenSockGlobals || _gsScope)[name];
 	};
-	if (typeof(define) === "function" && define.amd) { //AMD
-		define(["./TweenLite"], getGlobal);
-	} else if (typeof(module) !== "undefined" && module.exports) { //node
-		require("./TweenLite.js");
+	if (typeof(module) !== "undefined" && module.exports) { //node
+		require("gsap/TweenLite");
 		module.exports = getGlobal();
+	} else if (typeof(define) === "function" && define.amd) { //AMD
+		define(["gsap/TweenLite"], getGlobal);
 	}
 }("CustomEase"));
