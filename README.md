@@ -75,7 +75,7 @@ Change the extends controller class in the controller file
     return [
         'cache_enabled' => env('CACHE_ENABLED', true),
         'minify' => env('MINIFY', '.min'),
-        'wpapi'=> env('WPAPI', 'http://www.site.com/admin'),
+        'wpapi'=> env('WPAPI', 'url.to.admin'),
     ];
 
 ### HTACCESS
@@ -139,7 +139,7 @@ Change the extends controller class in the controller file
 
     CACHE_ENABLED=false
     MINIFY=
-    WPAPI=http://192.168.1.12/muttagency.com/admin
+    WPAPI=url.to.admin.local
 
 ### BACKUP CLI
 
