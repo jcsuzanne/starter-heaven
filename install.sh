@@ -1,5 +1,5 @@
 # INSTALL LARAVEL
-composer create-project laravel/laravel $FOLDER 5.3.* --prefer-dist
+composer create-project laravel/laravel $FOLDER 5.4.* --prefer-dist
 cd $FOLDER
 composer install
 chmod -R 777 bootstrap/cache
@@ -15,13 +15,16 @@ mv gulp ../
 mv gulpfile.js ../
 mv package.json ../
 rsync -av resources ../
-mv app/Http/Middleware/Caramel.php ../app/Http/Middleware/
+mv app/Http/Controllers/MotherbaseController.php ../app/Http/Controllers/
+mv app/Http/Controllers/PageController.php ../app/Http/Controllers/
+mv app/Http/Controllers/WpController.php ../app/Http/Controllers/
 cd ../
 rm -R resources/assets
 rm  resources/views/welcome.blade.php
 rm  resources/views/templates/mobile.blade.php
+rm  resources/views/templates/desktop.blade.php
 rm -R resources/views/vendor
 rm -R starter-heaven-master
 rm master.zip
-npm install
-gulp start
+yarn install
+gulp

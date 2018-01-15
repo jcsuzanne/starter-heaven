@@ -12,12 +12,14 @@ const browserify = require("browserify"),
     watchify     = require("watchify"),
     autoprefixer = require("gulp-autoprefixer"),
     rename       = require('gulp-rename'),
+    concat       = require('gulp-concat'),
     compatibility = { browsers: ['last 2 versions','> 1%', 'iOS <= 7' , 'Android >= 4'] },
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
     livereload = require('gulp-livereload'),
     svgmin = require('gulp-svgmin'),
     notify =   require("gulp-notify"),
+    htmlmin = require('gulp-htmlmin'),
 
     src = {
         css:    "./resources/css/builder.scss",
@@ -95,11 +97,24 @@ function bundle(file) {
 gulp.task("js:dev", bundles.bind(null, "dev"));
 // gulp.task("js:prod", bundles.bind(null, "prod"));
 gulp.task('js:prod', function() {
-    gulp.src('./build/front.js')
+    gulp.src(dest.js+'front.js')
     .pipe(rename('front.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest(dest.js))
     .pipe(notify("Minify JS Done"))
+});
+
+gulp.task('js:top', function () {
+    gulp.src([
+        './resources/js/_top/modernizr.js',
+    ])
+    .pipe(concat('top.js'))
+    .pipe(gulp.dest(dest.js))
+    .pipe(rename('top.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest(dest.js))
+    .pipe(notify("JSTop is Done!"))
+    ;
 });
 
 // CSS
@@ -159,8 +174,22 @@ gulp.task('svg', function () {
     .pipe(gulp.dest(dest.svg));
 });
 
+// COMPRESS
+gulp.task('compress', function() {
+    var opts = {
+        collapseWhitespace:    true,
+        removeAttributeQuotes: true,
+        removeComments:        true,
+        minifyJS:              true
+    };
+
+    return gulp.src('./storage/framework/views/*')
+               .pipe(htmlmin(opts))
+               .pipe(gulp.dest('./storage/framework/views/'));
+});
+
 // GLOBAL TASKS
 gulp.task("dev", ["js:dev", "css:dev"]);
 gulp.task("prod", ["js:prod", "css:prod"]);
-gulp.task("default", ["dev"]);
+gulp.task("default", ["js:top","dev"]);
 gulp.task("watching", ["watch", "dev"]);

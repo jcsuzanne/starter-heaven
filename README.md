@@ -5,12 +5,12 @@ Front-end sources for development
 Dependencies
   - Laravel
   - Laravel installer
-  - Caramel (https://packagist.org/packages/lapiscine/caramel)
   - WGET for installation
   - Gulp
+  - Yarn
 
 ### Version
-0.1.0
+0.2.0
 
 ### Installation
 
@@ -18,31 +18,6 @@ Dependencies
 
     FOLDER=foldername ./install.sh
 
-2.Add minify node in app.php
-
-    'minify' => '.min',
-
-
-3.Get Caramel front-end boilerplate by adding the lib in _composer.jon_ and run _composer update_
-
-    "lapiscine/caramel": "dev-master"
-
-4.Setup the Laravel environment in _bootstrap/start.php_
-
-    $env = $app->detectEnvironment(function () {
-
-        // Defined in the server configuration
-        if(isset($_SERVER['APP_ENVIRONMENT'])) {
-            return $_SERVER['APP_ENVIRONMENT'];
-        // Look for ./environment.php
-        } elseif ( file_exists( __DIR__ . '/environment.php' ) ) {
-            return include __DIR__ . '/environment.php';
-        }
-    });
-
-Add environment.php in _bootstrap_ folder with the following code
-
-    <?php return 'the-environment-i-want';
 
 ### How to use Caramel?
 
@@ -57,12 +32,123 @@ Pass the datas inside _viewData_
 
 5.Update _.gitignore_ with
 
-    /node_modules/
+    /node_modules
+    /public/hot
+    /public/storage
+    /storage/*.key
+    /vendor
+    /.idea
+    /.vagrant
+    Homestead.json
+    Homestead.yaml
     npm-debug.log
+    yarn-error.log
+    .env
     /.sass-cache/
-    /public/assets/build
-    /public/assets/img/temp
+    /public/build
+    /public/img/temp
+    admin/.htaccess
+    admin/wp-config.php
+    admin/wp-content/uploads/
+    admin/wp-content/blogs.dir/
+    admin/wp-content/upgrade/
+    admin/wp-content/backup-db/
+    admin/wp-content/advanced-cache.php
+    admin/wp-content/wp-cache-config.php
+    admin/wp-content/cache/
+    admin/wp-content/backups/
+    admin/wp-config-sample.php
+    sitemap.xml
+    sitemap.xml.gz
+    *.log
+    .DS_Store
+    /bootstrap/compiled.php
+    composer.phar
+    composer.lock
+    *.csv
+    admin/*.sql
+    admin/*.gz
+    wp_loader.php
+    *.sql
+    *.gz
 
+### JCS CONFIG
+
+    <?php
+
+    return [
+        'cache_enabled' => env('CACHE_ENABLED', true),
+        'minify' => env('MINIFY', '.min'),
+        'wpapi'=> env('WPAPI', 'http://www.site.com/admin'),
+    ];
+
+### HTACCESS
+
+    <IfModule mod_rewrite.c>
+        <IfModule mod_negotiation.c>
+            Options -MultiViews
+        </IfModule>
+
+        RewriteEngine On
+
+        # Redirect Trailing Slashes If Not A Folder...
+        RewriteCond %{REQUEST_FILENAME} !-d
+        #RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+        # Handle Front Controller...
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^ index.php [L]
+
+        # Handle Authorization Header
+        RewriteCond %{HTTP:Authorization} .
+        RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    </IfModule>
+
+### ENV
+
+    APP_NAME=Laravel
+    APP_ENV=local
+    APP_KEY=base64:zUu6DjOnBloyEO1NcvLk00zXkvy6oCmOGPBfzlQ3FHc=
+    APP_DEBUG=true
+    APP_LOG_LEVEL=debug
+    APP_URL=http://localhost
+
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=homestead
+    DB_USERNAME=homestead
+    DB_PASSWORD=secret
+
+    BROADCAST_DRIVER=log
+    CACHE_DRIVER=file
+    SESSION_DRIVER=file
+    QUEUE_DRIVER=sync
+
+    REDIS_HOST=127.0.0.1
+    REDIS_PASSWORD=null
+    REDIS_PORT=6379
+
+    MAIL_DRIVER=smtp
+    MAIL_HOST=smtp.mailtrap.io
+    MAIL_PORT=2525
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
+
+    PUSHER_APP_ID=
+    PUSHER_APP_KEY=
+    PUSHER_APP_SECRET=
+
+    CACHE_ENABLED=false
+    MINIFY=
+    WPAPI=http://192.168.1.12/muttagency.com/admin
+
+### BACKUP CLI
+
+    wp db export
+    tar -zcvf backup.tar.gz admin
 
 ### Migration L5 (5.2 ou 5.3)
 

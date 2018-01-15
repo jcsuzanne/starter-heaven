@@ -1,4 +1,4 @@
-import $ from 'jquery';
+
 import Env from '../base/env.js';
 import Channels from '../base/channels.js';
 import 'scroll-restoration-polyfill';

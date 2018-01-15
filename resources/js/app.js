@@ -1,9 +1,7 @@
 'use strict';
 
 // MODULES
-import $ from 'jquery';
 import OuterHeaven from './base/outerheaven.js';
-import SmartResize from './vendor/smartresize.js';
 import BrowserDetection from './base/detection.js';
 import Env from './base/env.js';
 import Toolbox from './base/toolbox.js';
@@ -17,12 +15,15 @@ document.addEventListener('DOMContentLoaded', function()
     // Starter
     Env.framework.toolbox = new Toolbox();
     new BrowserDetection();
-    $(window).on("throttledresize", function( event ) {
-        Channels.emit('window::smartresize')
+    window.addEventListener('resize',function() {
+        clearTimeout(window.resizedFinished);
+        window.resizedFinished = setTimeout(function(){
+            Channels.emit('window::smartresize')
+        }, 200);
     });
 
     // Views
-    new UI()
+    Env.framework.UI = new UI()
     Home.init()
 
     // Signature

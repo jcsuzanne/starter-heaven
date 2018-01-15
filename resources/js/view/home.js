@@ -1,6 +1,5 @@
 'use strict';
 import Barba from 'barba.js';
-import $ from 'jquery';
 import Env from '../base/env.js';
 
 let page
