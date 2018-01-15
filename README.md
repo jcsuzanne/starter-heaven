@@ -23,12 +23,8 @@ Dependencies
 
 Change the extends controller class in the controller file
 
-    class HomeController extends Lapiscine\Caramel\CaramelController {}
+    class TheController extends MotherbaseController
 
-Pass the datas inside _viewData_
-
-    $this->viewData['view'] = 'the content';
-    $this->viewData['jscontroller'] = 'js-controller';
 
 5.Update _.gitignore_ with
 
