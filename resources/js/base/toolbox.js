@@ -11,6 +11,23 @@ class Toolbox
         this.resetContext()
         this.newContextIsReady()
     }
+    
+    calculateTime(_time,_duration)
+    {
+        let secs = parseInt(_time % 60);
+        let mins = parseInt((_time / 60) % 60);
+        let hours = parseInt(((_time / 60) / 60) % 60);
+
+        // Do we need to display hours?
+        let displayHours = (parseInt(((_duration / 60) / 60) % 60) > 0);
+
+        // Ensure it's two digits. For example, 03 rather than 3.
+        secs = ('0' + secs).slice(-2);
+        mins = ('0' + mins).slice(-2);
+
+        let timeToDisplay = (displayHours ? hours + ':' : '') + mins + ':' + secs
+        return timeToDisplay;
+    }
 
     goBack()
     {
@@ -97,12 +114,7 @@ class Toolbox
 
         return hashParams;
     }
-
-    setScroll(x,y)
-    {
-        window.scrollTo(x, y);
-    }
-
+    
     resetScroll()
     {
         window.scrollTo(0, 0);
@@ -113,6 +125,31 @@ class Toolbox
         Channels.on('statechange::before',() => {
 
         })
+    }
+
+    setScroll(x,y)
+    {
+        window.scrollTo(x, y);
+    }
+    
+    shareSocial(_btn)
+    {
+        const $ref = _btn
+        const network = $ref.getAttribute('data-network')
+        const url = $ref.getAttribute('data-shareurl')
+
+        if(network == 'facebook')
+        {
+            FB.ui({
+                method: 'share',
+                display: 'popup',
+                href: url,
+            }, function(response){});
+        }
+        else if(network == "twitter" || network == "pinterest" || network == "linkedin")
+        {
+            window.open(url,"nom_popup","menubar=no, status=no, scrollbars=no, menubar=no, width=550, height=420");
+        }
     }
 
     scaleToWindow(canvas, backgroundColor) {
