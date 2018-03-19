@@ -14,10 +14,16 @@ cd starter-heaven-master
 mv gulp ../
 mv gulpfile.js ../
 mv package.json ../
+mv webpack.mix.js ../
+mv deploy-preprod.sh ../
+mv manifest.json ../
+mv pwa.js ../
 rsync -av resources ../
 mv app/Http/Controllers/MotherbaseController.php ../app/Http/Controllers/
 mv app/Http/Controllers/PageController.php ../app/Http/Controllers/
 mv app/Http/Controllers/WpController.php ../app/Http/Controllers/
+mv app/Http/Controllers/HelperController.php ../app/Http/Controllers/
+mv config/jcs.php ../config/
 cd ../
 rm -R resources/assets
 rm  resources/views/welcome.blade.php
@@ -27,4 +33,4 @@ rm -R resources/views/vendor
 rm -R starter-heaven-master
 rm master.zip
 yarn install
-gulp
+yarn

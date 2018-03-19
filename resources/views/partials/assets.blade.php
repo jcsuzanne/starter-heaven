@@ -1,12 +1,13 @@
 <!-- Styles -->
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('public/build/front'.config('jcs.minify').'.css') }}" media="all" />
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('public')}}{{ mix('/build/front.css') }}" media="all" />
 <!-- Javascript -->
-<script type="text/javascript" src="{{ URL::asset('public/build/top'.config('jcs.minify').'.js') }}"></script>
-<script type="text/javascript">
+<script>
 // <![CDATA[
 var config = {
+    env: "{{ config('app.env') }}",
     lang: "{{ config('app.locale') }}",
-    pathAssets: "{{ URL::asset('public') }}"
+    pathAssets: "{{ URL::asset('public') }}",
+    pathRoot : "{{ URL::asset('') }}"
 }
 // ]]>
 </script>

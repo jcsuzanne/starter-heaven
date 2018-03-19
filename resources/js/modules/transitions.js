@@ -1,6 +1,5 @@
 import Barba from 'barba.js'
 import Env from '../base/env.js'
-import TweenMax from 'gsap/TweenMax.js'
 import Channels from '../base/channels.js'
 
 let MainTransitions = Barba.BaseTransition.extend({

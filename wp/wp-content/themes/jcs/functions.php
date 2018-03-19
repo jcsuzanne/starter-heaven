@@ -123,6 +123,7 @@ function globalInfo() {
 	$global['contact']['email'] = get_option('options_contact_email');
 	$global['contact']['phone'] = get_option('options_contact_phone');
 	$global['contact']['gmaps'] = get_option('options_gmaps_position');
+	$global['contact']['gmaps']['link'] = 'https://www.google.fr/maps/place/'.urlencode(strip_tags($global['contact']['address']));
 	return $global;
 }
 

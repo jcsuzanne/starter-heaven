@@ -76,6 +76,11 @@ class Toolbox
         {
             ga('send', 'pageview', {'page': url});
         }
+        if(typeof window.gtag !== "undefined") {
+            gtag('config', window.GTAG_ID, {
+                'page_path': url
+              });
+        }
     }
 
     parseHashUrl()

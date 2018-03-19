@@ -52,6 +52,15 @@
     }
 }
 
+.v-tabletmobile
+{
+    display: none;
+    @include mq-responsiveTabletAndMobile
+    {
+        display: block !important;
+    }
+}
+
 .v-mobile
 {
     display: none;

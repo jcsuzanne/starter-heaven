@@ -1,4 +1,6 @@
 'use strict';
+// LIBS
+import { TweenMax } from 'gsap'
 
 // MODULES
 import OuterHeaven from './base/outerheaven.js';
@@ -36,5 +38,10 @@ document.addEventListener('DOMContentLoaded', function()
 
     // Start Barba
     new OuterHeaven();
+
+    // PWA
+    if(config.env === "production") {
+        navigator.serviceWorker.controller?console.log("[PWA Builder] active service worker found, no need to register"):navigator.serviceWorker.register(config.pathRoot+"pwa.js",{scope:config.pathRoot}).then(function(e){console.log("Service worker has been registered for scope:"+e.scope)});
+    }
 });
 

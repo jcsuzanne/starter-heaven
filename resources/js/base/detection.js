@@ -15,6 +15,14 @@ class BrowserDetection
         })
     }
 
+    iOSversion() {
+        if (/iP(hone|od|ad)/.test(navigator.platform)) {
+            // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
+            var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+            return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+        }
+    }
+
     detect()
     {
         let
@@ -26,12 +34,27 @@ class BrowserDetection
         Env.tablet = !!md.tablet()
         Env.ios = (md.mobile() == 'iPhone' == true || md.tablet() == 'iPad' == true)?true:false
 
+        // Detect IOS Safari
+        const ios = this.iOSversion()
+        if(typeof ios !== 'undefined') {
+            Env.$html.classList.add(`ios${ios[0]}`)
+        }
+        if(md.mobile() == 'iPhone') {
+            Env.$html.classList.add(`iphone`)
+        }
+        if(navigator.vendor === 'Apple Computer, Inc.') {
+            Env.$html.classList.add(`safari`)
+        }
+        //
+
         if(Env.mobile == false) Env.desktop = true
 
         Env.ie11 = !!navigator.userAgent.match(/Trident\/7\./)
         if(Env.ie11 == true) Env.$html.classList.add('ie11')
 
         Env.edge = (window.navigator.userAgent.indexOf("Edge") > -1)?true:false
+
+        if((Env.tablet == true && (window.innerWidth < window.innerHeight)) || Env.phone == true) Env.mobileCSS = true
 
         Env.$html.classList.remove('desktop')
         Env.$html.classList.remove('tablet')

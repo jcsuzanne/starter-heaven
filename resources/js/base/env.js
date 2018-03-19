@@ -6,7 +6,7 @@ let env = {
     $mainContent: document.getElementById('barba-wrapper'),
     $body: document.body,
     $master: document.getElementById('master'),
-    $mainNav: document.getElementById('main-nav'),
+    $mainNav: document.getElementById('jsView--mainnav'),
     $mainTransition: document.getElementById('jsView--transition'),
     framework: {},
     tablet: false,

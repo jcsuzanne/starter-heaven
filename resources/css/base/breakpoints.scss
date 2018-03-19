@@ -6,7 +6,21 @@
 }
 
 @mixin oldie {
-    .ie10 &,.ie9 &,.ie8 &
+    .ie10 &,.ie9 &,.ie8 &,.oldie &
+    {
+        @content;
+    }
+}
+
+@mixin oldie-mainnav-opened {
+    .ie10.mainnav--isOpened &,.ie9.mainnav--isOpened &,.ie8.mainnav--isOpened &,.oldie.mainnav--isOpened &
+    {
+        @content;
+    }
+}
+
+@mixin ie11 {
+    .ie11 &
     {
         @content;
     }
@@ -99,6 +113,14 @@
     }
 }
 
+@mixin mainnav-leaving
+{
+    .mainnav--isLeaving &
+    {
+        @content;
+    }
+}
+
 @mixin skin-white
 {
     .skin--isWhite &
@@ -126,6 +148,56 @@
 @mixin ui-isReady
 {
     .ui--isReady &
+    {
+        @content;
+    }
+}
+
+
+@mixin fx-isShown
+{
+    .is--shown &
+    {
+        @content;
+    }
+}
+
+@mixin fx-isShownMaster
+{
+    &.is--shown
+    {
+        @content;
+    }
+}
+
+
+@mixin ui--sticky
+{
+    .ui--sticky &
+    {
+        @content;
+    }
+}
+
+@mixin ui--sticky-show
+{
+    .ui--show.ui--sticky &
+    {
+        @content;
+    }
+}
+
+@mixin ui--sticky-mainnavOpened
+{
+    .mainnav--isOpened.ui--sticky &
+    {
+        @content;
+    }
+}
+
+@mixin view--isScrolling
+{
+    .v--isScrolling &
     {
         @content;
     }

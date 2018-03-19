@@ -1,6 +1,6 @@
 /*!
  * modernizr v3.5.0
- * Build https://modernizr.com/download?-cssgrid_cssgridlegacy-history-addtest-domprefixes-prefixed-prefixedcss-prefixes-setclasses-testallprops-testprop-teststyles-dontmin
+ * Build https://modernizr.com/download?-addtest-domprefixes-prefixed-prefixedcss-prefixes-setclasses-testallprops-testprop-teststyles-dontmin
  *
  * Copyright (c)
  *  Faruk Ates
@@ -23,6 +23,9 @@
 */
 
 ;(function(window, document, undefined){
+  var classes = [];
+  
+
   var tests = [];
   
 
@@ -85,7 +88,45 @@
 
   
 
-  var classes = [];
+  /**
+   * List of property values to set for css tests. See ticket #21
+   * http://git.io/vUGl4
+   *
+   * @memberof Modernizr
+   * @name Modernizr._prefixes
+   * @optionName Modernizr._prefixes
+   * @optionProp prefixes
+   * @access public
+   * @example
+   *
+   * Modernizr._prefixes is the internal list of prefixes that we test against
+   * inside of things like [prefixed](#modernizr-prefixed) and [prefixedCSS](#-code-modernizr-prefixedcss). It is simply
+   * an array of kebab-case vendor prefixes you can use within your code.
+   *
+   * Some common use cases include
+   *
+   * Generating all possible prefixed version of a CSS property
+   * ```js
+   * var rule = Modernizr._prefixes.join('transform: rotate(20deg); ');
+   *
+   * rule === 'transform: rotate(20deg); webkit-transform: rotate(20deg); moz-transform: rotate(20deg); o-transform: rotate(20deg); ms-transform: rotate(20deg);'
+   * ```
+   *
+   * Generating all possible prefixed version of a CSS value
+   * ```js
+   * rule = 'display:' +  Modernizr._prefixes.join('flex; display:') + 'flex';
+   *
+   * rule === 'display:flex; display:-webkit-flex; display:-moz-flex; display:-o-flex; display:-ms-flex; display:flex'
+   * ```
+   */
+
+  // we use ['',''] rather than an empty array in order to allow a pattern of .`join()`ing prefixes to test
+  // values in feature detects to continue to work
+  var prefixes = (ModernizrProto._config.usePrefixes ? ' -webkit- -moz- -o- -ms- '.split(' ') : ['','']);
+
+  // expose these for the plugin API. Look in the source for how to join() them against your input
+  ModernizrProto._prefixes = prefixes;
+
   
 
   /**
@@ -231,6 +272,47 @@
   }
 
   ;
+
+  /**
+   * If the browsers follow the spec, then they would expose vendor-specific styles as:
+   *   elem.style.WebkitBorderRadius
+   * instead of something like the following (which is technically incorrect):
+   *   elem.style.webkitBorderRadius
+
+   * WebKit ghosts their properties in lowercase but Opera & Moz do not.
+   * Microsoft uses a lowercase `ms` instead of the correct `Ms` in IE8+
+   *   erik.eae.net/archives/2008/03/10/21.48.10/
+
+   * More here: github.com/Modernizr/Modernizr/issues/issue/21
+   *
+   * @access private
+   * @returns {string} The string representing the vendor-specific style properties
+   */
+
+  var omPrefixes = 'Moz O ms Webkit';
+  
+
+  /**
+   * List of JavaScript DOM values used for tests
+   *
+   * @memberof Modernizr
+   * @name Modernizr._domPrefixes
+   * @optionName Modernizr._domPrefixes
+   * @optionProp domPrefixes
+   * @access public
+   * @example
+   *
+   * Modernizr._domPrefixes is exactly the same as [_prefixes](#modernizr-_prefixes), but rather
+   * than kebab-case properties, all properties are their Capitalized variant
+   *
+   * ```js
+   * Modernizr._domPrefixes === [ "Moz", "O", "ms", "Webkit" ];
+   * ```
+   */
+
+  var domPrefixes = (ModernizrProto._config.usePrefixes ? omPrefixes.toLowerCase().split(' ') : []);
+  ModernizrProto._domPrefixes = domPrefixes;
+  
 
   /**
    * hasOwnProp is a shim for hasOwnProperty that is needed for Safari 2.0 support
@@ -474,48 +556,108 @@
 
 
   /**
-   * If the browsers follow the spec, then they would expose vendor-specific styles as:
-   *   elem.style.WebkitBorderRadius
-   * instead of something like the following (which is technically incorrect):
-   *   elem.style.webkitBorderRadius
-
-   * WebKit ghosts their properties in lowercase but Opera & Moz do not.
-   * Microsoft uses a lowercase `ms` instead of the correct `Ms` in IE8+
-   *   erik.eae.net/archives/2008/03/10/21.48.10/
-
-   * More here: github.com/Modernizr/Modernizr/issues/issue/21
+   * cssToDOM takes a kebab-case string and converts it to camelCase
+   * e.g. box-sizing -> boxSizing
    *
    * @access private
-   * @returns {string} The string representing the vendor-specific style properties
+   * @function cssToDOM
+   * @param {string} name - String name of kebab-case prop we want to convert
+   * @returns {string} The camelCase version of the supplied name
    */
 
-  var omPrefixes = 'Moz O ms Webkit';
-  
+  function cssToDOM(name) {
+    return name.replace(/([a-z])-([a-z])/g, function(str, m1, m2) {
+      return m1 + m2.toUpperCase();
+    }).replace(/^-/, '');
+  }
+  ;
 
   /**
-   * List of JavaScript DOM values used for tests
+   * domToCSS takes a camelCase string and converts it to kebab-case
+   * e.g. boxSizing -> box-sizing
    *
-   * @memberof Modernizr
-   * @name Modernizr._domPrefixes
-   * @optionName Modernizr._domPrefixes
-   * @optionProp domPrefixes
-   * @access public
-   * @example
-   *
-   * Modernizr._domPrefixes is exactly the same as [_prefixes](#modernizr-_prefixes), but rather
-   * than kebab-case properties, all properties are their Capitalized variant
-   *
-   * ```js
-   * Modernizr._domPrefixes === [ "Moz", "O", "ms", "Webkit" ];
-   * ```
+   * @access private
+   * @function domToCSS
+   * @param {string} name - String name of camelCase prop we want to convert
+   * @returns {string} The kebab-case version of the supplied name
    */
 
-  var domPrefixes = (ModernizrProto._config.usePrefixes ? omPrefixes.toLowerCase().split(' ') : []);
-  ModernizrProto._domPrefixes = domPrefixes;
-  
+  function domToCSS(name) {
+    return name.replace(/([A-Z])/g, function(str, m1) {
+      return '-' + m1.toLowerCase();
+    }).replace(/^ms-/, '-ms-');
+  }
+  ;
 
   var cssomPrefixes = (ModernizrProto._config.usePrefixes ? omPrefixes.split(' ') : []);
   ModernizrProto._cssomPrefixes = cssomPrefixes;
+  
+
+  /**
+   * atRule returns a given CSS property at-rule (eg @keyframes), possibly in
+   * some prefixed form, or false, in the case of an unsupported rule
+   *
+   * @memberof Modernizr
+   * @name Modernizr.atRule
+   * @optionName Modernizr.atRule()
+   * @optionProp atRule
+   * @access public
+   * @function atRule
+   * @param {string} prop - String name of the @-rule to test for
+   * @returns {string|boolean} The string representing the (possibly prefixed)
+   * valid version of the @-rule, or `false` when it is unsupported.
+   * @example
+   * ```js
+   *  var keyframes = Modernizr.atRule('@keyframes');
+   *
+   *  if (keyframes) {
+   *    // keyframes are supported
+   *    // could be `@-webkit-keyframes` or `@keyframes`
+   *  } else {
+   *    // keyframes === `false`
+   *  }
+   * ```
+   *
+   */
+
+  var atRule = function(prop) {
+    var length = prefixes.length;
+    var cssrule = window.CSSRule;
+    var rule;
+
+    if (typeof cssrule === 'undefined') {
+      return undefined;
+    }
+
+    if (!prop) {
+      return false;
+    }
+
+    // remove literal @ from beginning of provided property
+    prop = prop.replace(/^@/, '');
+
+    // CSSRules use underscores instead of dashes
+    rule = prop.replace(/-/g, '_').toUpperCase() + '_RULE';
+
+    if (rule in cssrule) {
+      return '@' + prop;
+    }
+
+    for (var i = 0; i < length; i++) {
+      // prefixes gives us something like -o-, and we want O_
+      var prefix = prefixes[i];
+      var thisRule = prefix.toUpperCase() + '_' + rule;
+
+      if (thisRule in cssrule) {
+        return '@-' + prefix.toLowerCase() + '-' + prop;
+      }
+    }
+
+    return false;
+  };
+
+  ModernizrProto.atRule = atRule;
+
   
 
 
@@ -559,35 +701,6 @@
   }
 
   ;
-
-  /**
-   * Create our "modernizr" element that we do most feature tests on.
-   *
-   * @access private
-   */
-
-  var modElem = {
-    elem: createElement('modernizr')
-  };
-
-  // Clean up this element
-  Modernizr._q.push(function() {
-    delete modElem.elem;
-  });
-
-  
-
-  var mStyle = {
-    style: modElem.elem.style
-  };
-
-  // kill ref for gc, must happen before mod.elem is removed, so we unshift on to
-  // the front of the queue.
-  Modernizr._q.unshift(function() {
-    delete mStyle.style;
-  });
-
-  
 
   /**
    * getBody returns the body of a document, or an element that can stand in for
@@ -690,21 +803,150 @@
   ;
 
   /**
-   * domToCSS takes a camelCase string and converts it to kebab-case
-   * e.g. boxSizing -> box-sizing
+   * testStyles injects an element with style element and some CSS rules
    *
-   * @access private
-   * @function domToCSS
-   * @param {string} name - String name of camelCase prop we want to convert
-   * @returns {string} The kebab-case version of the supplied name
+   * @memberof Modernizr
+   * @name Modernizr.testStyles
+   * @optionName Modernizr.testStyles()
+   * @optionProp testStyles
+   * @access public
+   * @function testStyles
+   * @param {string} rule - String representing a css rule
+   * @param {function} callback - A function that is used to test the injected element
+   * @param {number} [nodes] - An integer representing the number of additional nodes you want injected
+   * @param {string[]} [testnames] - An array of strings that are used as ids for the additional nodes
+   * @returns {boolean}
+   * @example
+   *
+   * `Modernizr.testStyles` takes a CSS rule and injects it onto the current page
+   * along with (possibly multiple) DOM elements. This lets you check for features
+   * that can not be detected by simply checking the [IDL](https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Interface_development_guide/IDL_interface_rules).
+   *
+   * ```js
+   * Modernizr.testStyles('#modernizr { width: 9px; color: papayawhip; }', function(elem, rule) {
+   *   // elem is the first DOM node in the page (by default #modernizr)
+   *   // rule is the first argument you supplied - the CSS rule in string form
+   *
+   *   addTest('widthworks', elem.style.width === '9px')
+   * });
+   * ```
+   *
+   * If your test requires multiple nodes, you can include a third argument
+   * indicating how many additional div elements to include on the page. The
+   * additional nodes are injected as children of the `elem` that is returned as
+   * the first argument to the callback.
+   *
+   * ```js
+   * Modernizr.testStyles('#modernizr {width: 1px}; #modernizr2 {width: 2px}', function(elem) {
+   *   document.getElementById('modernizr').style.width === '1px'; // true
+   *   document.getElementById('modernizr2').style.width === '2px'; // true
+   *   elem.firstChild === document.getElementById('modernizr2'); // true
+   * }, 1);
+   * ```
+   *
+   * By default, all of the additional elements have an ID of `modernizr[n]`, where
+   * `n` is its index (e.g. the first additional, second overall is `#modernizr2`,
+   * the second additional is `#modernizr3`, etc.).
+   * If you want to have more meaningful IDs for your function, you can provide
+   * them as the fourth argument, as an array of strings
+   *
+   * ```js
+   * Modernizr.testStyles('#foo {width: 10px}; #bar {height: 20px}', function(elem) {
+   *   elem.firstChild === document.getElementById('foo'); // true
+   *   elem.lastChild === document.getElementById('bar'); // true
+   * }, 2, ['foo', 'bar']);
+   * ```
+   *
    */
 
-  function domToCSS(name) {
-    return name.replace(/([A-Z])/g, function(str, m1) {
-      return '-' + m1.toLowerCase();
-    }).replace(/^ms-/, '-ms-');
+  var testStyles = ModernizrProto.testStyles = injectElementWithStyles;
+  
+
+  /**
+   * fnBind is a super small [bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) polyfill.
+   *
+   * @access private
+   * @function fnBind
+   * @param {function} fn - a function you want to change `this` reference to
+   * @param {object} that - the `this` you want to call the function with
+   * @returns {function} The wrapped version of the supplied function
+   */
+
+  function fnBind(fn, that) {
+    return function() {
+      return fn.apply(that, arguments);
+    };
   }
+
   ;
+
+  /**
+   * testDOMProps is a generic DOM property test; if a browser supports
+   *   a certain property, it won't return undefined for it.
+   *
+   * @access private
+   * @function testDOMProps
+   * @param {array.<string>} props - An array of properties to test for
+   * @param {object} obj - An object or Element you want to use to test the parameters again
+   * @param {boolean|object} elem - An Element to bind the property lookup again. Use `false` to prevent the check
+   * @returns {false|*} returns false if the prop is unsupported, otherwise the value that is supported
+   */
+  function testDOMProps(props, obj, elem) {
+    var item;
+
+    for (var i in props) {
+      if (props[i] in obj) {
+
+        // return the property name as a string
+        if (elem === false) {
+          return props[i];
+        }
+
+        item = obj[props[i]];
+
+        // let's bind a function
+        if (is(item, 'function')) {
+          // bind to obj unless overriden
+          return fnBind(item, elem || obj);
+        }
+
+        // return the unbound function or obj or value
+        return item;
+      }
+    }
+    return false;
+  }
+
+  ;
+
+  /**
+   * Create our "modernizr" element that we do most feature tests on.
+   *
+   * @access private
+   */
+
+  var modElem = {
+    elem: createElement('modernizr')
+  };
+
+  // Clean up this element
+  Modernizr._q.push(function() {
+    delete modElem.elem;
+  });
+
+  
+
+  var mStyle = {
+    style: modElem.elem.style
+  };
+
+  // kill ref for gc, must happen before mod.elem is removed, so we unshift on to
+  // the front of the queue.
+  Modernizr._q.unshift(function() {
+    delete mStyle.style;
+  });
+
+  
 
 
   /**
@@ -782,23 +1024,6 @@
       });
     }
     return undefined;
-  }
-  ;
-
-  /**
-   * cssToDOM takes a kebab-case string and converts it to camelCase
-   * e.g. box-sizing -> boxSizing
-   *
-   * @access private
-   * @function cssToDOM
-   * @param {string} name - String name of kebab-case prop we want to convert
-   * @returns {string} The camelCase version of the supplied name
-   */
-
-  function cssToDOM(name) {
-    return name.replace(/([a-z])-([a-z])/g, function(str, m1, m2) {
-      return m1 + m2.toUpperCase();
-    }).replace(/^-/, '');
   }
   ;
 
@@ -897,61 +1122,43 @@
   ;
 
   /**
-   * fnBind is a super small [bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) polyfill.
+   * testProp() investigates whether a given style property is recognized
+   * Property names can be provided in either camelCase or kebab-case.
    *
-   * @access private
-   * @function fnBind
-   * @param {function} fn - a function you want to change `this` reference to
-   * @param {object} that - the `this` you want to call the function with
-   * @returns {function} The wrapped version of the supplied function
+   * @memberof Modernizr
+   * @name Modernizr.testProp
+   * @access public
+   * @optionName Modernizr.testProp()
+   * @optionProp testProp
+   * @function testProp
+   * @param {string} prop - Name of the CSS property to check
+   * @param {string} [value] - Name of the CSS value to check
+   * @param {boolean} [useValue] - Whether or not to check the value if @supports isn't supported
+   * @returns {boolean}
+   * @example
+   *
+   * Just like [testAllProps](#modernizr-testallprops), only it does not check any vendor prefixed
+   * version of the string.
+   *
+   * Note that the property name must be provided in camelCase (e.g. boxSizing not box-sizing)
+   *
+   * ```js
+   * Modernizr.testProp('pointerEvents')  // true
+   * ```
+   *
+   * You can also provide a value as an optional second argument to check if a
+   * specific value is supported
+   *
+   * ```js
+   * Modernizr.testProp('pointerEvents', 'none') // true
+   * Modernizr.testProp('pointerEvents', 'penguin') // false
+   * ```
    */
 
-  function fnBind(fn, that) {
-    return function() {
-      return fn.apply(that, arguments);
-    };
-  }
-
-  ;
-
-  /**
-   * testDOMProps is a generic DOM property test; if a browser supports
-   *   a certain property, it won't return undefined for it.
-   *
-   * @access private
-   * @function testDOMProps
-   * @param {array.<string>} props - An array of properties to test for
-   * @param {object} obj - An object or Element you want to use to test the parameters again
-   * @param {boolean|object} elem - An Element to bind the property lookup again. Use `false` to prevent the check
-   * @returns {false|*} returns false if the prop is unsupported, otherwise the value that is supported
-   */
-  function testDOMProps(props, obj, elem) {
-    var item;
-
-    for (var i in props) {
-      if (props[i] in obj) {
-
-        // return the property name as a string
-        if (elem === false) {
-          return props[i];
-        }
-
-        item = obj[props[i]];
-
-        // let's bind a function
-        if (is(item, 'function')) {
-          // bind to obj unless overriden
-          return fnBind(item, elem || obj);
-        }
-
-        // return the unbound function or obj or value
-        return item;
-      }
-    }
-    return false;
-  }
-
-  ;
+  var testProp = ModernizrProto.testProp = function(prop, value, useValue) {
+    return testProps([prop], undefined, value, useValue);
+  };
+  
 
   /**
    * testPropsAll tests a list of DOM properties we want to check against.
@@ -990,73 +1197,6 @@
   // Note that the property names must be provided in the camelCase variant.
   // Modernizr.testAllProps('boxSizing')
   ModernizrProto.testAllProps = testPropsAll;
-
-  
-
-  /**
-   * atRule returns a given CSS property at-rule (eg @keyframes), possibly in
-   * some prefixed form, or false, in the case of an unsupported rule
-   *
-   * @memberof Modernizr
-   * @name Modernizr.atRule
-   * @optionName Modernizr.atRule()
-   * @optionProp atRule
-   * @access public
-   * @function atRule
-   * @param {string} prop - String name of the @-rule to test for
-   * @returns {string|boolean} The string representing the (possibly prefixed)
-   * valid version of the @-rule, or `false` when it is unsupported.
-   * @example
-   * ```js
-   *  var keyframes = Modernizr.atRule('@keyframes');
-   *
-   *  if (keyframes) {
-   *    // keyframes are supported
-   *    // could be `@-webkit-keyframes` or `@keyframes`
-   *  } else {
-   *    // keyframes === `false`
-   *  }
-   * ```
-   *
-   */
-
-  var atRule = function(prop) {
-    var length = prefixes.length;
-    var cssrule = window.CSSRule;
-    var rule;
-
-    if (typeof cssrule === 'undefined') {
-      return undefined;
-    }
-
-    if (!prop) {
-      return false;
-    }
-
-    // remove literal @ from beginning of provided property
-    prop = prop.replace(/^@/, '');
-
-    // CSSRules use underscores instead of dashes
-    rule = prop.replace(/-/g, '_').toUpperCase() + '_RULE';
-
-    if (rule in cssrule) {
-      return '@' + prop;
-    }
-
-    for (var i = 0; i < length; i++) {
-      // prefixes gives us something like -o-, and we want O_
-      var prefix = prefixes[i];
-      var thisRule = prefix.toUpperCase() + '_' + rule;
-
-      if (thisRule in cssrule) {
-        return '@-' + prefix.toLowerCase() + '-' + prop;
-      }
-    }
-
-    return false;
-  };
-
-  ModernizrProto.atRule = atRule;
 
   
 
@@ -1145,47 +1285,6 @@
   
 
   /**
-   * List of property values to set for css tests. See ticket #21
-   * http://git.io/vUGl4
-   *
-   * @memberof Modernizr
-   * @name Modernizr._prefixes
-   * @optionName Modernizr._prefixes
-   * @optionProp prefixes
-   * @access public
-   * @example
-   *
-   * Modernizr._prefixes is the internal list of prefixes that we test against
-   * inside of things like [prefixed](#modernizr-prefixed) and [prefixedCSS](#-code-modernizr-prefixedcss). It is simply
-   * an array of kebab-case vendor prefixes you can use within your code.
-   *
-   * Some common use cases include
-   *
-   * Generating all possible prefixed version of a CSS property
-   * ```js
-   * var rule = Modernizr._prefixes.join('transform: rotate(20deg); ');
-   *
-   * rule === 'transform: rotate(20deg); webkit-transform: rotate(20deg); moz-transform: rotate(20deg); o-transform: rotate(20deg); ms-transform: rotate(20deg);'
-   * ```
-   *
-   * Generating all possible prefixed version of a CSS value
-   * ```js
-   * rule = 'display:' +  Modernizr._prefixes.join('flex; display:') + 'flex';
-   *
-   * rule === 'display:flex; display:-webkit-flex; display:-moz-flex; display:-o-flex; display:-ms-flex; display:flex'
-   * ```
-   */
-
-  // we use ['',''] rather than an empty array in order to allow a pattern of .`join()`ing prefixes to test
-  // values in feature detects to continue to work
-  var prefixes = (ModernizrProto._config.usePrefixes ? ' -webkit- -moz- -o- -ms- '.split(' ') : ['','']);
-
-  // expose these for the plugin API. Look in the source for how to join() them against your input
-  ModernizrProto._prefixes = prefixes;
-
-  
-
-  /**
    * prefixedCSS is just like [prefixed](#modernizr-prefixed), but the returned values are in
    * kebab-case (e.g. `box-sizing`) rather than camelCase (boxSizing).
    *
@@ -1261,171 +1360,6 @@
   }
   ModernizrProto.testAllProps = testAllProps;
   
-
-  /**
-   * testProp() investigates whether a given style property is recognized
-   * Property names can be provided in either camelCase or kebab-case.
-   *
-   * @memberof Modernizr
-   * @name Modernizr.testProp
-   * @access public
-   * @optionName Modernizr.testProp()
-   * @optionProp testProp
-   * @function testProp
-   * @param {string} prop - Name of the CSS property to check
-   * @param {string} [value] - Name of the CSS value to check
-   * @param {boolean} [useValue] - Whether or not to check the value if @supports isn't supported
-   * @returns {boolean}
-   * @example
-   *
-   * Just like [testAllProps](#modernizr-testallprops), only it does not check any vendor prefixed
-   * version of the string.
-   *
-   * Note that the property name must be provided in camelCase (e.g. boxSizing not box-sizing)
-   *
-   * ```js
-   * Modernizr.testProp('pointerEvents')  // true
-   * ```
-   *
-   * You can also provide a value as an optional second argument to check if a
-   * specific value is supported
-   *
-   * ```js
-   * Modernizr.testProp('pointerEvents', 'none') // true
-   * Modernizr.testProp('pointerEvents', 'penguin') // false
-   * ```
-   */
-
-  var testProp = ModernizrProto.testProp = function(prop, value, useValue) {
-    return testProps([prop], undefined, value, useValue);
-  };
-  
-
-  /**
-   * testStyles injects an element with style element and some CSS rules
-   *
-   * @memberof Modernizr
-   * @name Modernizr.testStyles
-   * @optionName Modernizr.testStyles()
-   * @optionProp testStyles
-   * @access public
-   * @function testStyles
-   * @param {string} rule - String representing a css rule
-   * @param {function} callback - A function that is used to test the injected element
-   * @param {number} [nodes] - An integer representing the number of additional nodes you want injected
-   * @param {string[]} [testnames] - An array of strings that are used as ids for the additional nodes
-   * @returns {boolean}
-   * @example
-   *
-   * `Modernizr.testStyles` takes a CSS rule and injects it onto the current page
-   * along with (possibly multiple) DOM elements. This lets you check for features
-   * that can not be detected by simply checking the [IDL](https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Interface_development_guide/IDL_interface_rules).
-   *
-   * ```js
-   * Modernizr.testStyles('#modernizr { width: 9px; color: papayawhip; }', function(elem, rule) {
-   *   // elem is the first DOM node in the page (by default #modernizr)
-   *   // rule is the first argument you supplied - the CSS rule in string form
-   *
-   *   addTest('widthworks', elem.style.width === '9px')
-   * });
-   * ```
-   *
-   * If your test requires multiple nodes, you can include a third argument
-   * indicating how many additional div elements to include on the page. The
-   * additional nodes are injected as children of the `elem` that is returned as
-   * the first argument to the callback.
-   *
-   * ```js
-   * Modernizr.testStyles('#modernizr {width: 1px}; #modernizr2 {width: 2px}', function(elem) {
-   *   document.getElementById('modernizr').style.width === '1px'; // true
-   *   document.getElementById('modernizr2').style.width === '2px'; // true
-   *   elem.firstChild === document.getElementById('modernizr2'); // true
-   * }, 1);
-   * ```
-   *
-   * By default, all of the additional elements have an ID of `modernizr[n]`, where
-   * `n` is its index (e.g. the first additional, second overall is `#modernizr2`,
-   * the second additional is `#modernizr3`, etc.).
-   * If you want to have more meaningful IDs for your function, you can provide
-   * them as the fourth argument, as an array of strings
-   *
-   * ```js
-   * Modernizr.testStyles('#foo {width: 10px}; #bar {height: 20px}', function(elem) {
-   *   elem.firstChild === document.getElementById('foo'); // true
-   *   elem.lastChild === document.getElementById('bar'); // true
-   * }, 2, ['foo', 'bar']);
-   * ```
-   *
-   */
-
-  var testStyles = ModernizrProto.testStyles = injectElementWithStyles;
-  
-/*!
-{
-  "name": "CSS Grid (old & new)",
-  "property": ["cssgrid", "cssgridlegacy"],
-  "authors": ["Faruk Ates"],
-  "tags": ["css"],
-  "notes": [{
-    "name": "The new, standardized CSS Grid",
-    "href": "https://www.w3.org/TR/css3-grid-layout/"
-  }, {
-    "name": "The _old_ CSS Grid (legacy)",
-    "href": "https://www.w3.org/TR/2011/WD-css3-grid-layout-20110407/"
-  }]
-}
-!*/
-
-  // `grid-columns` is only in the old syntax, `grid-column` exists in both and so `grid-template-rows` is used for the new syntax.
-  Modernizr.addTest('cssgridlegacy', testAllProps('grid-columns', '10px', true));
-  Modernizr.addTest('cssgrid', testAllProps('grid-template-rows', 'none', true));
-
-/*!
-{
-  "name": "History API",
-  "property": "history",
-  "caniuse": "history",
-  "tags": ["history"],
-  "authors": ["Hay Kranen", "Alexander Farkas"],
-  "notes": [{
-    "name": "W3C Spec",
-    "href": "https://www.w3.org/TR/html51/browsers.html#the-history-interface"
-  }, {
-    "name": "MDN documentation",
-    "href": "https://developer.mozilla.org/en-US/docs/Web/API/window.history"
-  }],
-  "polyfills": ["historyjs", "html5historyapi"]
-}
-!*/
-/* DOC
-Detects support for the History API for manipulating the browser session history.
-*/
-
-  Modernizr.addTest('history', function() {
-    // Issue #733
-    // The stock browser on Android 2.2 & 2.3, and 4.0.x returns positive on history support
-    // Unfortunately support is really buggy and there is no clean way to detect
-    // these bugs, so we fall back to a user agent sniff :(
-    var ua = navigator.userAgent;
-
-    // We only want Android 2 and 4.0, stock browser, and not Chrome which identifies
-    // itself as 'Mobile Safari' as well, nor Windows Phone (issue #1471).
-    if ((ua.indexOf('Android 2.') !== -1 ||
-        (ua.indexOf('Android 4.0') !== -1)) &&
-        ua.indexOf('Mobile Safari') !== -1 &&
-        ua.indexOf('Chrome') === -1 &&
-        ua.indexOf('Windows Phone') === -1 &&
-    // Since all documents on file:// share an origin, the History apis are
-    // blocked there as well
-        location.protocol !== 'file:'
-    ) {
-      return false;
-    }
-
-    // Return the regular check
-    return (window.history && 'pushState' in window.history);
-  });
-
 
   // Run each test
   testRunner();

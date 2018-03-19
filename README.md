@@ -67,6 +67,7 @@ Change the extends controller class in the controller file
     wp_loader.php
     *.sql
     *.gz
+    wp/*
 
 ### JCS CONFIG
 
@@ -138,13 +139,51 @@ Change the extends controller class in the controller file
     PUSHER_APP_SECRET=
 
     CACHE_ENABLED=false
-    MINIFY=
     WPAPI=url.to.admin.local
+
+### Force HTTPS in Laravel Provider AppServiceProvider.php
+
+    if (config('app.env') === 'production') {
+        $this->app['url']->forceScheme('https');
+    }
+
+### ROUTES
+
+    <?php
+    $routes = require('paths.php');
+
+    // Flush the website
+    Route::get('flushcache',function()
+    {
+        Cache::flush();
+        if(function_exists('wp_cache_clear_cache')):
+            wp_cache_clear_cache();
+        endif;
+    });
+
+    // INTERNAL
+    Route::get('/', 'PageController@home');
+    Route::group(
+        [
+            'prefix' => LaravelLocalization::setLocale(),
+        ], function () use ($routes) {
+            Route::get($routes['home'], 'PageController@home');
+        }
+    );
+    Route::group(
+        [
+            'prefix' => LaravelLocalization::setLocale(),
+            'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+        ], function () use ($routes) {
+            Route::get($routes['single'], 'PageController@single');
+        }
+    );
 
 ### BACKUP CLI
 
     wp db export
     tar -zcvf backup.tar.gz admin
+
 
 
 License
