@@ -1,6 +1,6 @@
 import Barba from 'barba.js';
 import Channels from '../base/channels.js';
-import MainTransitions from '../modules/transitions.js';
+import TransitionDispatcher from '../transition/TransitionDispatcher';
 
 class OuterHeaven
 {
@@ -10,7 +10,7 @@ class OuterHeaven
         Barba.Prefetch.init();
         Barba.Pjax.getTransition = function()
         {
-            return MainTransitions
+            return TransitionDispatcher
         }
         Barba.Pjax.start();
         Barba.Dispatcher.on('linkClicked', function() {

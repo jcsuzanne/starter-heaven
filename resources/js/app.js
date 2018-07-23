@@ -8,6 +8,7 @@ import BrowserDetection from './base/detection.js';
 import Env from './base/env.js';
 import Toolbox from './base/toolbox.js';
 import Channels from './base/channels.js';
+import MainTransition from './transition/TransitionMain'
 import Home from './view/home.js';
 import UI from './view/ui.js';
 
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function()
 
     // Views
     Env.framework.UI = new UI()
+    Env.framework.MainTransition = new MainTransition()
     Home.init()
 
     // Signature

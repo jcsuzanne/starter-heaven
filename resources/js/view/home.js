@@ -4,10 +4,11 @@ import Env from '../base/env.js';
 
 let page
 
-class Home
+class Page
 {
     constructor(view='')
     {
+        this.view = view
         this.classView = 'currentView--home'
     }
 }
@@ -16,7 +17,7 @@ page = Barba.BaseView.extend({
     namespace: 'home',
     node: undefined,
     onEnter: function() {
-        this.node = new Home(this.container)
+        this.node = new Page(this.container)
         Env.$html.classList.add(this.node.classView)
     },
     onLeaveCompleted: function()

@@ -1,0 +1,1 @@
+{{-- window.GTAG_ID = '' --}}

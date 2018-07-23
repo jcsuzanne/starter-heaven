@@ -53,7 +53,9 @@ class BrowserDetection
         if(Env.ie11 == true) Env.$html.classList.add('ie11')
 
         Env.edge = (window.navigator.userAgent.indexOf("Edge") > -1)?true:false
+        if(Env.edge == true) Env.$html.classList.add('edge')
 
+        Env.mobileCSS = false
         if((Env.tablet == true && (window.innerWidth < window.innerHeight)) || Env.phone == true) Env.mobileCSS = true
 
         Env.$html.classList.remove('desktop')
