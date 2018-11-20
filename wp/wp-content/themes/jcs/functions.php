@@ -106,8 +106,37 @@ remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wr
 remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10);
 
 /*
-* Enable global info to REST API
+* Controllers
 */
+
+function getCategoryFromTaxo($post)
+{
+	$type = $post->post_type;
+	$names = array();
+	$slugs = array();
+	$ids = array();
+	switch($type):
+		default:
+			$taxo = 'category';
+		break;
+	endswitch;
+
+	$categories = get_the_terms($post,$taxo);
+	if(isset($categories) && !empty($categories)):
+		foreach($categories as $cat):
+			array_push($names,$cat->name);
+			array_push($slugs,$cat->slug);
+			array_push($ids,$cat->term_id);
+		endforeach;
+	endif;
+	return array('names'=>$names,'slugs'=>$slugs,'ids'=>$ids);
+}
+
+
+/*
+* REST
+*/
+
 function globalInfo() {
 	$global = array();
 	$global['sitename'] = get_option('blogname');
@@ -138,6 +167,21 @@ function metaInfo($data)
 	return $meta;
 }
 
+function preparePost($post)
+{
+	$data = array();
+	$data['post_title'] = $post->post_title;
+	$data['post_excerpt'] = getExcerpt($post);
+	$data['post_name'] = $post->post_name;
+	$data['post_type'] = $post->post_type;
+	$data['id'] = $post->ID;
+	$data['media_full'] = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID),'full');
+	$data['media_large'] = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID),'large');
+	$data['media_medium'] = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID),'medium');
+	$data['categories'] = getCategoryFromTaxo($post);
+	return $data;
+}
+
 function getPostNext($data)
 {
 	global $post;
@@ -148,14 +192,7 @@ function getPostNext($data)
 	if($next_post == ""):
 		return 0;
 	endif;
-	$data = array();
-	$data['post_title_fr'] = $next_post->post_title;
-	$data['post_title_en'] = get_field('post_title_en',$next_post->ID);
-	$data['post_name'] = $next_post->post_name;
-	$data['id'] = $next_post->ID;
-	$data['logo'] = get_field('client_name',$next_post->ID);
-	$data['color'] = get_field('color',$next_post->ID);
-	$data['media'] = wp_get_attachment_image_src(get_post_thumbnail_id($next_post->ID),'full');
+	$data = preparePost($next_post);
 	return $data;
 }
 
@@ -168,47 +205,15 @@ function getPostPrev($data)
 	if($prev_post == ""):
 		return 0;
 	endif;
-	$data = array();
-	$data['post_title_fr'] = $prev_post->post_title;
-	$data['post_title_en'] = get_field('post_title_en',$prev_post->ID);
-	$data['post_name'] = $prev_post->post_name;
-	$data['id'] = $prev_post->ID;
-	$data['logo'] = get_field('client_name',$prev_post->ID);
-	$data['color'] = get_field('color',$prev_post->ID);
-	$data['media'] = wp_get_attachment_image_src(get_post_thumbnail_id($prev_post->ID),'full');
+	$data = preparePost($next_post);
 	return $data;
 }
-
-
-/*
-* Enable ACF To REST
-*/
 
 function acfRestPerField($data)
 {
 	$postID = $data['id'];
 	$field = $data['field'];
 	return get_field($field,$postID);
-}
-
-function acfRestWorks($data)
-{
-	$postID = $data['id'];
-	$data = array();
-	$data['logo'] = get_field('client_name',$postID);
-	$data['color'] = get_field('color',$postID);
-	$data['media'] = wp_get_attachment_image_src(get_post_thumbnail_id($postID),'full');
-	return $data;
-}
-
-function acfRestWorkItem($data)
-{
-	$postID = $data['id'];
-	$data = array();
-	$data = get_fields($postID);
-	$data['media'] = wp_get_attachment_image_src(get_post_thumbnail_id($postID),'full');
-	$data['media_medium_large'] = wp_get_attachment_image_src(get_post_thumbnail_id($postID),'medium_large');
-	return $data;
 }
 
 function acfRestPage($data)
@@ -248,14 +253,6 @@ add_action('rest_api_init', function () {
 	register_rest_route('jcs/v1', '/acf_field/(?P<id>\d+)/(?P<field>[a-zA-Z0-9-_]+)', array(
 		'methods' => 'GET',
 		'callback' => 'acfRestPerField',
-	));
-	register_rest_route('jcs/v1', '/acf_fields/(?P<id>\d+)/works', array(
-		'methods' => 'GET',
-		'callback' => 'acfRestWorks',
-	));
-	register_rest_route('jcs/v1', '/acf_fields/(?P<id>\d+)/work_item', array(
-		'methods' => 'GET',
-		'callback' => 'acfRestWorkItem',
 	));
 	register_rest_route('jcs/v1', '/acf_fields/(?P<id>\d+)/page', array(
 		'methods' => 'GET',

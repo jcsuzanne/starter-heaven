@@ -95,6 +95,17 @@
     height: auto;
     width: 100%;
 }
+%video-full
+{
+    @include absoluteLeft(50%,50%);
+    display: block;
+    height: auto;
+    min-height: 101%;
+    min-width: 101%;
+    transform: translate(-50%,-50%);
+    transform-origin: center center;
+    width: auto;
+}
 
 // Transitions //
 %transition-background

@@ -81,6 +81,22 @@
     }
 }
 
+@mixin mq-desktop
+{
+    .desktop &
+    {
+        @content;
+    }
+}
+
+@mixin mq-desktop-tabletlandscape
+{
+    .desktop &,.tablet.landscape &
+    {
+        @content;
+    }
+}
+
 @mixin is-sticky {
     .mainnav--isSticky &
     {
@@ -198,6 +214,14 @@
 @mixin view--isScrolling
 {
     .v--isScrolling &
+    {
+        @content;
+    }
+}
+
+@mixin ui-animExit
+{
+    .ui--animExit &
     {
         @content;
     }

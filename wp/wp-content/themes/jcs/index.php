@@ -18,5 +18,13 @@
 require __DIR__ . '/../../../wp-load.php';
 
 $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-$replace_link = str_replace('/admin/','/',$actual_link);
-header('Location:'.$replace_link);
+if(isset($_GET['preview']) && $_GET['preview'] == true && isset($_GET['p']) && $_GET['p'] !== 0):
+    $replace_link = str_replace('/admin/','/preview',$actual_link);
+    header('Location:'.$replace_link);
+else:
+    $replace_link = str_replace('/admin/','/',$actual_link);
+    // POST TYPE
+    // $replace_link = str_replace('/slug_wp/','/slug_front/',$replace_link);
+    $clean_link = substr($replace_link,0,-1);
+    header('Location:'.$clean_link);
+endif;

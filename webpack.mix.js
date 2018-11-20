@@ -45,7 +45,7 @@ if (mix.inProduction()) {
 // BrowserSync
 
 mix.browserSync({
-    proxy : '192.168.1.20/domain.tld',
+    proxy : '192.168.1.11/domain.tld',
     cors:true,
     files: [
     'public/build/front.css',  // Generated .css file
@@ -55,5 +55,7 @@ mix.browserSync({
     // on which platform this project is being built upon.
     // =====================================================================
     'resources/views/**', // Laravel-specific view files
+    'resources/lang/**', // Laravel-specific view files;
+    'app/**', // Laravel Application
     ]
 });
