@@ -70,6 +70,14 @@
     }
 }
 
+.hidden--mobilecss
+{
+    @include mq-responsiveTabletPortrait
+    {
+        display: none;
+    }
+}
+
 // Z VIEWS
 .zview-foreground
 {

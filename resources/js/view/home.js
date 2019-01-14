@@ -1,6 +1,7 @@
 'use strict';
 import Barba from 'barba.js';
 import Env from '../base/env.js';
+import Channels from '../base/channels'
 
 let page
 
@@ -10,6 +11,33 @@ class Page
     {
         this.view = view
         this.classView = 'currentView--home'
+        // Launch Fn
+        this.funcLaunch = this.intro.bind(this)
+        if(Env.framework.UI.launcher.LAUNCHED == false) this.channels()
+    }
+
+    channels()
+    {
+        Channels.on('launcher::exit',this.funcLaunch)
+    }
+
+    destroy()
+    {
+        Channels.removeListener('launcher::exit', this.funcLaunch);
+    }
+
+    finalize()
+    {
+        setTimeout(() => {
+            if(Env.isVisiting === true) {
+                this.intro()
+            }
+        }, 200);
+    }
+
+    intro()
+    {
+        console.log('intro');
     }
 }
 
@@ -19,6 +47,14 @@ page = Barba.BaseView.extend({
     onEnter: function() {
         this.node = new Page(this.container)
         Env.$html.classList.add(this.node.classView)
+    },
+    onEnterCompleted:function()
+    {
+        this.node.finalize()
+    },
+    onLeave: function()
+    {
+        this.node.destroy()
     },
     onLeaveCompleted: function()
     {

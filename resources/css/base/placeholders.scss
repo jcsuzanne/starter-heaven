@@ -125,6 +125,37 @@
     opacity: 1;
     transition: opacity 400ms $easeOutCubic;
 }
+%transition-appearOut
+{
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 900ms $easeOutCubic , transform 1000ms $easeOutCubic;
+}
+%transition-appearIn
+{
+    opacity: 1;
+    transform: translateY(0px);
+}
+%transition-appearOutFade
+{
+    opacity: 0;
+    transition: opacity 900ms $easeOutCubic;
+}
+%transition-appearInFade
+{
+    opacity: 1;
+}
+%hover-appearTranslateFadeOut
+{
+    opacity: 0;
+    transform: translateY(5px);
+    transition: transform 400ms $easeOutCubic, opacity 500ms $easeOutCubic;
+}
+%hover-appearTranslateFadeIn
+{
+    opacity: 1;
+    transform: translateY(0px);
+}
 
 // Fonts //
 %font-icomoon

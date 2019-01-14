@@ -6,6 +6,12 @@ class OuterHeaven
 {
     constructor()
     {
+        if(config.BARBA_ENABLED * 1 === 0)
+        {
+            Barba.Pjax.preventCheck = function() {
+                return false;
+            };
+        }
         Barba.Pjax.cacheEnabled = true
         Barba.Prefetch.init();
         Barba.Pjax.getTransition = function()

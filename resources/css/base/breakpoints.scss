@@ -104,9 +104,9 @@
     }
 }
 
-@mixin ios-recent
+@mixin ios-mobile-safari
 {
-    .iphone.safari.ios11 &,.iphone.safari.ios10 &,.iphone.safari.ios9 &,.iphone.safari.ios8 &
+    .safari.ios12 &,.safari.ios11 &,.safari.ios10 &,.safari.ios9 &,.safari.ios8 &
     {
         @content;
     }
@@ -152,6 +152,15 @@
         @content;
     }
 }
+
+@mixin skin-white-views
+{
+    .currentView--xxx &
+    {
+        @content;
+    }
+}
+
 
 @mixin env-touch
 {

@@ -16,10 +16,27 @@ class HelperController extends Controller
         $this->WP = new WpController();
     }
 
+    public function hackMailto($string)
+    {
+        $content = str_replace('href="mailto:','class="jsTrigger-mailto" data-noinner="true" data-mailto="mailto:',$string);
+        $content = str_replace('@','[at]',$content);
+        return $content;
+    }
+
     public function getUrlRoute($post)
     {
         $lang = config('app.locale');
         $url = url($lang.'/'.$post->post_name);
+        return $url;
+    }
+
+    public function makeUrl(String $type = 'post',String $slug)
+    {
+        switch ($type):
+            default:
+                $url = url("news/$slug");
+                break;
+        endswitch;
         return $url;
     }
 
@@ -68,5 +85,36 @@ class HelperController extends Controller
             endif;
         endif;
         return $content;
+    }
+
+    public function paginationCheckAfter($request)
+    {
+        try
+        {
+            $client = new Client();
+            $response = $client->get($request);
+            $ctaMore = true;
+        } catch(ClientException $e) {
+            $code = $e->getCode();
+            $ctaMore = false;
+        }
+        return $ctaMore;
+    }
+
+    public function seo($datas,$global)
+    {
+        $seo = array();
+        if(isset($datas['seo_acf']['seo_title']) && !empty($datas['seo_acf']['seo_title'])):
+            $seo['title'] = $datas['seo_acf']['seo_title'];
+        else:
+            $seo['title'] = $datas['title']['rendered'].' - '.$global['sitename'];
+        endif;
+        if(isset($datas['seo_acf']['seo_description']) && !empty($datas['seo_acf']['seo_description'])):
+            $seo['description'] = $datas['seo_acf']['seo_description'];
+        else:
+            $seo['description'] = strip_tags($datas['excerpt']['rendered']);
+        endif;
+
+        return $seo;
     }
 }

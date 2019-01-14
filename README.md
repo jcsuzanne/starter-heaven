@@ -68,6 +68,7 @@ Change the extends controller class in the controller file
     *.sql
     *.gz
     wp/*
+    admin/wp-content/ai1wm-backups
 
 ### JCS CONFIG
 
@@ -178,6 +179,12 @@ Change the extends controller class in the controller file
             Route::get($routes['single'], 'PageController@single');
         }
     );
+
+    // Sitemap
+    Route::get('sitemap.xml','SitemapController@get');
+
+    // PREVIEW
+    Route::get('preview','PreviewController@show');
 
 ### BACKUP CLI
 

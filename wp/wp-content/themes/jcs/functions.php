@@ -45,7 +45,7 @@ function jcs_setup() {
 	// add_image_size( 'custom-thumbnail', 690, 788, true );
 
 	// Set the default content width.
-	$GLOBALS['content_width'] = 525;
+	$GLOBALS['content_width'] = 1920;
 
 	// This theme uses wp_nav_menu() in two locations.
 	register_nav_menus( array(
@@ -105,9 +105,53 @@ if(function_exists('acf_add_options_page')) {
 remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
 remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10);
 
+
+/*
+	* Remove Paragraph Tags From Around Images
+	*
+	*/
+// function filter_ptags_on_images($content){
+// 	return preg_replace('​/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content);
+// }
+// add_filter('the_content', 'filter_ptags_on_images');
+// remove_filter( 'the_content', 'wpautop' );
+function filter_ptags_on_images( $content ) {
+    $content = preg_replace('/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content);
+    return preg_replace('/<p>\s*(<iframe .*>*.<\/iframe>)\s*<\/p>/iU', '\1', $content);
+}
+add_filter('the_content', 'filter_ptags_on_images');
+
+function div_wrapper($content) {
+    // match any iframes
+    $pattern = '~<iframe.*</iframe>|<embed.*</embed>~';
+    preg_match_all($pattern, $content, $matches);
+
+    foreach ($matches[0] as $match) {
+        // wrap matched iframe with div
+        $wrappedframe = '<div class="iframe-container">' . $match . '</div>';
+
+        //replace original iframe with new in content
+        $content = str_replace($match, $wrappedframe, $content);
+    }
+
+    return $content;
+}
+add_filter('the_content', 'div_wrapper');
+
 /*
 * Controllers
 */
+
+function getAcfPost($post)
+{
+	$id = $post['id'];
+	$the_post = get_post($id);
+	$fields = get_fields($id);
+	$fields['yoast_title'] = get_post_meta($id,'_yoast_wpseo_title',true);
+	$fields['yoast_desc'] = get_post_meta($id,'_yoast_wpseo_metadesc',true);
+	return $fields;
+}
+
 
 function getCategoryFromTaxo($post)
 {
@@ -132,26 +176,72 @@ function getCategoryFromTaxo($post)
 	return array('names'=>$names,'slugs'=>$slugs,'ids'=>$ids);
 }
 
+function seoAcf($post)
+{
+	$id = $post['id'];
+	$seo = array(
+		'seo_title'=>get_field('seo_title',$id),
+		'seo_description'=>get_field('seo_description',$id),
+	);
+	return $seo;
+}
 
 /*
 * REST
 */
+function getParentWorks($post)
+{
+	$idParent = $post['parent'];
+	$postParent = null;
+	if($idParent != 0):
+		$postParent = get_post($idParent);
+	endif;
+	return $postParent;
+}
 
+function getVisuals($post)
+{
+	$id = $post['featured_media'];
+	$visuals = array();
+	$visuals['full'] = wp_get_attachment_image_src($id,'full');
+	$visuals['normal'] = wp_get_attachment_image_src($id,'large');
+	$visuals['tablet'] = wp_get_attachment_image_src($id,'medium');
+	return $visuals;
+}
+
+function renderCategories($post)
+{
+	$terms = array();
+	$slugs = array();
+	$categories = array();
+	if(isset($post['categories']) && !empty($post['categories'])):
+		foreach($post['categories'] as $k=>$cat):
+			$term = get_term($cat);
+			$categories[$k] = $term;
+			array_push($terms,$term->name);
+			array_push($slugs,$term->slug);
+		endforeach;
+	endif;
+	return array('entries'=>$categories,'names'=>$terms,'slugs'=>$slugs);
+}
 function globalInfo() {
 	$global = array();
+	$fields = get_fields('option');
+	$global['fields'] = $fields;
 	$global['sitename'] = get_option('blogname');
 	$global['sitedesc'] = get_option('blogdescription');
-	$global['sitedesc_fr'] = $global['sitedesc'];
-	$global['sitedesc_en'] = get_option('options_blogdescription_en');
-	$global['tagline_fr'] = wpautop(get_option('options_tagline_fr'));
-	$global['tagline_en'] = wpautop(get_option('options_tagline_en'));
-	$global['social'] = get_option('wpseo_social');
-	$global['social']['twitter_site'] = '@'.$global['social']['twitter_site'];
-	$global['metaImg'] = $global['social']['og_default_image'];
-	$global['contact']['address'] = wpautop(get_option('options_contact_address'));
-	$global['contact']['email'] = get_option('options_contact_email');
-	$global['contact']['phone'] = get_option('options_contact_phone');
-	$global['contact']['gmaps'] = get_option('options_gmaps_position');
+	// $global['sitedesc_fr'] = $global['sitedesc'];
+	// $global['sitedesc_en'] = get_option('options_blogdescription_en');
+	// $global['tagline_fr'] = wpautop(get_option('options_tagline_fr'));
+	// $global['tagline_en'] = wpautop(get_option('options_tagline_en'));
+	$global['social']['links'] = $fields['social'];
+	$global['social']['twitter_site'] = '@'.$fields['twitter_site'];
+	$metaImg = $fields['meta_og_image'];
+	$global['metaImg'] = array('url'=>$metaImg['url'],'width'=>$metaImg['width'],'height'=>$metaImg['height']);
+	$global['contact']['address'] = wpautop($fields['contact_address']);
+	$global['contact']['email'] = $fields['contact_email'];
+	$global['contact']['phone'] = $fields['contact_phone'];
+	$global['contact']['gmaps'] = $fields['gmaps_position'];
 	$global['contact']['gmaps']['link'] = 'https://www.google.fr/maps/place/'.urlencode(strip_tags($global['contact']['address']));
 	return $global;
 }
@@ -216,15 +306,6 @@ function acfRestPerField($data)
 	return get_field($field,$postID);
 }
 
-function acfRestPage($data)
-{
-	$postID = $data['id'];
-	$data = array();
-	$data = get_fields($postID);
-	$data['media'] = wp_get_attachment_image_src(get_post_thumbnail_id($postID),'full');
-	return $data;
-}
-
 function acfRestTerm($data)
 {
 	$postID = $data['id'];
@@ -250,16 +331,42 @@ add_action('rest_api_init', function () {
 		'methods' => 'GET',
 		'callback' => 'getPostNext',
 	));
+	register_rest_route('jcs/v1', '/acf/(?P<id>\d+)', array(
+		'methods' => 'GET',
+		'callback' => 'getAcfPost',
+	));
 	register_rest_route('jcs/v1', '/acf_field/(?P<id>\d+)/(?P<field>[a-zA-Z0-9-_]+)', array(
 		'methods' => 'GET',
 		'callback' => 'acfRestPerField',
-	));
-	register_rest_route('jcs/v1', '/acf_fields/(?P<id>\d+)/page', array(
-		'methods' => 'GET',
-		'callback' => 'acfRestPage',
 	));
 	register_rest_route('jcs/v1', '/acf_term/(?P<id>\d+)/(?P<field>[a-zA-Z0-9-_]+)', array(
 		'methods' => 'GET',
 		'callback' => 'acfRestTerm',
 	));
 });
+
+// Enhanced Rest Response
+function enhancedWC()
+{
+	register_rest_field('page','seo_acf',
+		array(
+			'get_callback' => 'seoAcf'
+		)
+	);
+	register_rest_field('post','categories_rendered',
+		array(
+			'get_callback' => 'renderCategories'
+		)
+	);
+	register_rest_field('post','visuals',
+		array(
+			'get_callback' => 'getVisuals'
+		)
+	);
+	register_rest_field('page','visuals',
+		array(
+			'get_callback' => 'getVisuals'
+		)
+	);
+}
+add_action( 'rest_api_init', 'enhancedWC' );

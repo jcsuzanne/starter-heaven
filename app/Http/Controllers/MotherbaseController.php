@@ -27,7 +27,7 @@ class MotherbaseController extends Controller
         endif;
         $dataShared = [
             'global'=>$this->globalInfo(),
-            'mainnav'=>$this->mainNavigation(),
+            'navigation'=>$this->mainNavigation(),
         ];
         $this->shared = $dataShared;
         view()->share('shared',$this->shared);
