@@ -9,9 +9,6 @@ Dependencies
   - Gulp
   - Yarn
 
-### Version
-0.2.0
-
 ### Installation
 
 1.Launch installer
@@ -139,6 +136,8 @@ Change the extends controller class in the controller file
     PUSHER_APP_KEY=
     PUSHER_APP_SECRET=
 
+    BARBA_ENABLED=0
+    DEBUGBAR_ENABLED=false
     CACHE_ENABLED=false
     WPAPI=url.to.admin.local
 
@@ -185,6 +184,13 @@ Change the extends controller class in the controller file
 
     // PREVIEW
     Route::get('preview','PreviewController@show');
+
+### PATHS.PHP
+
+    <?php
+        return array(
+        'home' => '',
+    );
 
 ### BACKUP CLI
 

@@ -138,6 +138,14 @@ function div_wrapper($content) {
 }
 add_filter('the_content', 'div_wrapper');
 
+
+// add acf values to revisions rest api
+add_filter( 'rest_prepare_revision', function( $response, $post ) {
+    $data = $response->get_data();
+    $data['fields'] = get_fields( $post->ID );
+    return rest_ensure_response( $data );
+}, 10, 2 );
+
 /*
 * Controllers
 */
@@ -153,12 +161,13 @@ function getAcfPost($post)
 }
 
 
-function getCategoryFromTaxo($post)
+function getCategoryFromTaxo($post,$type='')
 {
 	$type = $post->post_type;
 	$names = array();
 	$slugs = array();
 	$ids = array();
+	$raw = array();
 	switch($type):
 		default:
 			$taxo = 'category';
@@ -171,9 +180,10 @@ function getCategoryFromTaxo($post)
 			array_push($names,$cat->name);
 			array_push($slugs,$cat->slug);
 			array_push($ids,$cat->term_id);
+			array_push($raw,$cat);
 		endforeach;
 	endif;
-	return array('names'=>$names,'slugs'=>$slugs,'ids'=>$ids);
+	return array('names'=>$names,'slugs'=>$slugs,'ids'=>$ids,'raw'=>$raw);
 }
 
 function seoAcf($post)
@@ -209,6 +219,22 @@ function getVisuals($post)
 	return $visuals;
 }
 
+function getVisualList($post)
+{
+	$response = array();
+	$visuals = get_field('visual_list');
+	$response['full'] = array($visuals['url'],$visuals['width'],$visuals['height']);
+	$response['normal'] = array($visuals['sizes']['large'],$visuals['sizes']['large-width'],$visuals['sizes']['large-width']);
+	$response['tablet'] = array($visuals['sizes']['medium'],$visuals['sizes']['medium-width'],$visuals['sizes']['medium-width']);
+	return $response;
+}
+
+function getVisualTaxo($category)
+{
+	$catId = $category['id'];
+	return get_field('visual',"term_$catId");
+}
+
 function renderCategories($post)
 {
 	$terms = array();
@@ -224,6 +250,23 @@ function renderCategories($post)
 	endif;
 	return array('entries'=>$categories,'names'=>$terms,'slugs'=>$slugs);
 }
+
+function renderTags($post)
+{
+	$terms = array();
+	$slugs = array();
+	$categories = array();
+	if(isset($post['tags']) && !empty($post['tags'])):
+		foreach($post['tags'] as $k=>$cat):
+			$term = get_term($cat);
+			$categories[$k] = $term;
+			array_push($terms,$term->name);
+			array_push($slugs,$term->slug);
+		endforeach;
+	endif;
+	return array('entries'=>$categories,'names'=>$terms,'slugs'=>$slugs);
+}
+
 function globalInfo() {
 	$global = array();
 	$fields = get_fields('option');
@@ -268,10 +311,23 @@ function preparePost($post)
 	$data['media_full'] = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID),'full');
 	$data['media_large'] = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID),'large');
 	$data['media_medium'] = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID),'medium');
-	$data['categories'] = getCategoryFromTaxo($post);
+	$data['categories'] = getCategoryFromTaxo($post,$post->post_type);
 	return $data;
 }
 
+function getExcerpt($post)
+{
+	$type = $post->post_type;
+	switch($type):
+		case 'post':
+			$excerpt = $post->post_excerpt;
+		break;
+		default:
+			$excerpt = get_field('short_description',$post->ID);
+		break;
+	endswitch;
+	return $excerpt;
+}
 function getPostNext($data)
 {
 	global $post;
@@ -295,7 +351,7 @@ function getPostPrev($data)
 	if($prev_post == ""):
 		return 0;
 	endif;
-	$data = preparePost($next_post);
+	$data = preparePost($prev_post);
 	return $data;
 }
 
@@ -370,3 +426,6 @@ function enhancedWC()
 	);
 }
 add_action( 'rest_api_init', 'enhancedWC' );
+
+// To fix the header authorization on 1&1 hosting (https://github.com/WP-API/Basic-Auth/issues/35#issuecomment-473690015)
+#add_filter('flush_rewrite_rules_hard','__return_false');

@@ -1,1 +1,12 @@
 @include griddle-build(2 3 4 10 20);
+
+.grid-flex
+{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    .grid__cell
+    {
+        padding: 0;
+    }
+}

@@ -20,8 +20,9 @@ add_action( 'init', 'my_add_excerpts_to_pages' );
 
 function flushcache( ) {
     // global $wpdb;
-    $link = home_url().'/flushcache';
-    wp_remote_get($link);
+	$link = home_url().'/flushcache';
+	$replace_link = str_replace('/admin/','/',$link);
+    wp_remote_get($replace_link);
 }
 add_action( 'save_post', 'flushcache' );
 add_action('wp_insert_comment','flushcache');
