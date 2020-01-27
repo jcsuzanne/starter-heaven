@@ -26,7 +26,7 @@
     "browser-sync": "^2.23.6",
     "browser-sync-webpack-plugin": "^2.0.1",
     "cross-env": "^5.1.4",
-    "detectizr": "https://github.com/barisaydinoglu/Detectizr.git",
+    "detectizr": "latest",
     "director": "^1.2.8",
     "form-serialize": "^0.7.2",
     "gsap": "latest",
